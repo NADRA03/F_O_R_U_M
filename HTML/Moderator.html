@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moderator Page</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <h1>Moderator Page</h1>
+    <!-- <form action="/moderator" method="post">
+        <button type="submit">Create Tables</button>
+    </form> -->
+    {{range .Tables}}
+        <h2>Table: {{.Name}}</h2>
+        <table>
+            <thead>
+                <tr>
+                    {{range .Columns}}
+                        <th>{{.}}</th>
+                    {{end}}
+                </tr>
+            </thead>
+            <tbody>
+                {{range .Rows}}
+                    <tr>
+                        {{range .}}
+                            <td>{{.}}</td>
+                        {{end}}
+                    </tr>
+                {{end}}
+            </tbody>
+        </table>
+    {{end}}
+</body>
+</html>
