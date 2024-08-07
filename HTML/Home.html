@@ -5,15 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Forum App</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box !important;
+        }
+
+        html, body {
+            height: 100%;
+        }
+
         body {
             font-family: Arial, sans-serif;
+            display: table;
+            width: 100%;
+            height: 100%;
+            background-color: #171717;
+            color: #000;
+            line-height: 1.6;
+            position: relative;
+            overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #f4f4f4;
         }
+
         .container {
             max-width: 400px;
             width: 100%;
@@ -24,22 +40,27 @@
             display: flex;
             flex-direction: column;
             align-items: flex-start;
+            z-index: 10;
         }
+
         h1 {
             margin-bottom: 20px;
             font-size: 24px;
             text-align: center;
             width: 100%;
         }
+
         .button-group {
             width: 100%;
         }
+
         .button-group a {
             display: block;
             width: 100%;
             margin-bottom: 10px;
             text-decoration: none;
         }
+
         .button-group button {
             width: 100%;
             padding: 10px;
@@ -49,19 +70,115 @@
             border-radius: 4px;
             cursor: pointer;
         }
+
         .button-group button:hover {
             background-color: #0056b3;
+        }
+
+        @keyframes move {
+            100% {
+                transform: translate3d(0, 0, 1px) rotate(360deg);
+            }
+        }
+
+        .background {
+            position: fixed;
+            width: 100vw;
+            height: 100vh;
+            top: 0;
+            left: 0;
+            background: #3E1E68;
+            overflow: hidden;
+        }
+
+        .background span {
+            width: 3vmin;
+            height: 3vmin;
+            border-radius: 3vmin;
+            backface-visibility: hidden;
+            position: absolute;
+            animation: move infinite linear;
+        }
+
+        .background span:nth-child(1) {
+            color: #583C87;
+            top: 85%;
+            left: 46%;
+            animation-duration: 26s;
+            animation-delay: -17s;
+            transform-origin: 17vw 5vh;
+            box-shadow: -6vmin 0 0.9047849631558191vmin currentColor;
+        }
+
+        .background span:nth-child(2) {
+            color: #583C87;
+            top: 32%;
+            left: 3%;
+            animation-duration: 14s;
+            animation-delay: -27s;
+            transform-origin: 7vw -1vh;
+            box-shadow: -6vmin 0 0.9113303191893214vmin currentColor;
+        }
+
+        .background span:nth-child(3) {
+            color: #FFACAC;
+            top: 52%;
+            left: 23%;
+            animation-duration: 19s;
+            animation-delay: -29s;
+            transform-origin: -15vw 14vh;
+            box-shadow: 6vmin 0 0.9342746468925485vmin currentColor;
+        }
+
+        .background span:nth-child(4) {
+            color: #583C87;
+            top: 92%;
+            left: 96%;
+            animation-duration: 24s;
+            animation-delay: -7s;
+            transform-origin: -15vw 6vh;
+            box-shadow: 6vmin 0 0.8733232852394202vmin currentColor;
+        }
+
+        .background span:nth-child(5) {
+            color: #583C87;
+            top: 18%;
+            left: 87%;
+            animation-duration: 17s;
+            animation-delay: -18s;
+            transform-origin: 6vw -2vh;
+            box-shadow: 6vmin 0 1.0265731406770195vmin currentColor;
+        }
+
+        .background span:nth-child(6) {
+            color: #583C87;
+            top: 85%;
+            left: 33%;
+            animation-duration: 12s;
+            animation-delay: -4s;
+            transform-origin: -8vw -23vh;
+            box-shadow: 6vmin 0 1.454180470900316vmin currentColor;
         }
     </style>
 </head>
 <body>
+    <div class="background">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
     <div class="container">
         <h1>Hello, {{.Name}}</h1>
         <div class="button-group">
             <a href="/moderator"><button>Go to Moderator Page</button></a>
             <a href="/login"><button>Go to Login Page</button></a>
             <a href="/myposts"><button>Go to MyPosts Page</button></a>
+            <a href="/mylikes"><button>Go to MyLikes Page</button></a>
         </div>
     </div>
 </body>
 </html>
+

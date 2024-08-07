@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Posts</title>
+    <title>Comments</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -15,37 +15,24 @@
             margin: 0 auto;
             padding: 20px;
         }
-        .post {
+        .post, .comment {
             margin: 20px 0;
             padding: 20px;
             border: 1px solid #ddd;
             border-radius: 5px;
             background-color: #f9f9f9;
         }
-        .post h2 {
+        .post h2, .comment h2 {
             margin: 0 0 10px 0;
             font-size: 1.5em;
         }
-        .post p {
+        .post p, .comment p {
             margin: 5px 0;
             font-size: 1em;
         }
-        .post .date {
+        .post .date, .comment .date {
             font-size: 0.9em;
             color: #6c757d;
-        }
-        .post .icons {
-            display: flex;
-            gap: 10px;
-            margin-top: 10px;
-        }
-        .post .icons a {
-            text-decoration: none;
-            color: #007bff;
-            cursor: pointer;
-        }
-        .post .icons a:hover {
-            color: #0056b3;
         }
         form {
             margin: 20px 0;
@@ -58,7 +45,7 @@
             display: block;
             margin: 10px 0 5px;
         }
-        form textarea, form input[type="text"] {
+        form textarea {
             width: 100%;
             padding: 8px;
             border: 1px solid #ccc;
@@ -93,45 +80,36 @@
 <body>
 
     <div class="container">
-        <h1>My Posts</h1>
+        <h1>Comments</h1>
         {{if .StatusMessage}}
         <div class="status-message success">
-            {{if eq .StatusMessage "success"}}Post added successfully!{{end}}
+            {{if eq .StatusMessage "success"}}Comment added successfully!{{end}}
         </div>
         {{end}}
 
-        {{if .Posts}}
-        {{range .Posts}}
         <div class="post">
-            <h2>{{.Category}}</h2>
+            <h2>{{.Post.Category}}</h2>
+            <p class="date">{{.Post.Date}}</p>
+            <p>{{.Post.Text}}</p>
+        </div>
+
+        {{if .Comments}}
+        {{range .Comments}}
+        <div class="comment">
+            <h2>User {{.UserID}}</h2>
             <p class="date">{{.Date}}</p>
-            <p>{{.Text}}</p>
-            <div class="icons">
-                <a href="/like?post_id={{.PostID}}">👍 Like</a>
-                <a href="/comment?post_id={{.PostID}}">💬 Comment</a>
-            </div>
+            <p>{{.Comment}}</p>
         </div>
         {{end}}
         {{else}}
-        <p>No posts available.</p>
+        <p>No comments available.</p>
         {{end}}
 
-        <form action="/myposts" method="post">
-            <label for="text">Text:</label>
-            <textarea id="text" name="text" required></textarea><br>
-            
-            <label for="category">Category:</label>
-            <input type="text" id="category" name="category" required><br>
-            
-            <button type="submit">Add Post</button>
+        <form action="/comment?post_id={{.Post.PostID}}" method="post">
+            <label for="comment">Comment:</label>
+            <textarea id="comment" name="comment" required></textarea><br>
+            <button type="submit">Add Comment</button>
         </form>
     </div>
 </body>
 </html>
-
-
-
-
-
-
-

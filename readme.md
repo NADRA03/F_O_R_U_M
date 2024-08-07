@@ -23,3 +23,8 @@ the server can use the session ID stored in the cookie to retrieve the correspon
 4. run database "sqlite3 forum.db" will open a terminal 
 5. fake users: moderator 123, not-moderator 123
 moderator can access moderator.html
+
+# resources 
+https://wweb.dev/resources/animated-css-background-generator
+
+

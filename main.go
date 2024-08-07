@@ -22,6 +22,9 @@ func main() {
     http.HandleFunc("/login", Forum.LoginHandler(db))
     http.HandleFunc("/signup", Forum.SignupHandler(db))
     http.HandleFunc("/myposts", Forum.MyPostsHandler(db))
+    http.HandleFunc("/mylikes", Forum.MyPostsHandler(db))
+    http.HandleFunc("/like", Forum.LikeHandler(db))
+    http.HandleFunc("/comment", Forum.CommentHandler(db))
     fmt.Println("Server started at :8080")
     http.ListenAndServe(":8080", nil)
 }
