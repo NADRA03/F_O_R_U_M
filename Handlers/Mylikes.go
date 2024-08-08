@@ -6,7 +6,7 @@ import (
     "net/http"
 )
 
-func MyPostsHandler(db *sql.DB) http.HandlerFunc {
+func MyLikesHandler(db *sql.DB) http.HandlerFunc {
     return func(w http.ResponseWriter, r *http.Request) {
         session, _ := store.Get(r, "mysession")
 
@@ -17,21 +17,13 @@ func MyPostsHandler(db *sql.DB) http.HandlerFunc {
 
         userID, _ := session.Values["id"].(int)
 
-        if r.Method == http.MethodPost {
-            text := r.FormValue("text")
-            category := r.FormValue("category")
-
-            _, err := db.Exec("INSERT INTO post (user_id, text, media, date, category) VALUES (?, ?, '', CURRENT_TIMESTAMP, ?)", userID, text, category)
-            if err != nil {
-                http.Error(w, err.Error(), http.StatusInternalServerError)
-                return
-            }
-
-            http.Redirect(w, r, "/myposts?status=success", http.StatusSeeOther)
-            return
-        }
-
-        rows, err := db.Query("SELECT post_id, text, media, date, category FROM post WHERE user_id = ?", userID)
+        // Query to select posts liked by the user
+        rows, err := db.Query(`
+            SELECT p.post_id, p.text, p.media, p.date, p.category 
+            FROM post p
+            JOIN like l ON p.post_id = l.post_id
+            WHERE l.user_id = ?
+        `, userID)
         if err != nil {
             http.Error(w, err.Error(), http.StatusInternalServerError)
             return
@@ -62,13 +54,12 @@ func MyPostsHandler(db *sql.DB) http.HandlerFunc {
             posts = append(posts, post)
         }
 
-        tmpl, err := template.ParseFiles("HTML/myposts.html")
+        tmpl, err := template.ParseFiles("HTML/mylikes.html")
         if err != nil {
             http.Error(w, err.Error(), http.StatusInternalServerError)
             return
         }
 
-        statusMessage := r.URL.Query().Get("status")
         tmpl.Execute(w, struct {
             Posts          []struct {
                 PostID   int
@@ -77,11 +68,8 @@ func MyPostsHandler(db *sql.DB) http.HandlerFunc {
                 Date     string
                 Category string
             }
-            StatusMessage string
         }{
             Posts:          posts,
-            StatusMessage:  statusMessage,
         })
     }
 }
-
