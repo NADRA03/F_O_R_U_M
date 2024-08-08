@@ -14,7 +14,7 @@ func MyPostsHandler(db *sql.DB) http.HandlerFunc {
             http.Redirect(w, r, "/", http.StatusSeeOther)
             return
         }
-
+      
         userID, _ := session.Values["id"].(int)
 
         if r.Method == http.MethodPost {

@@ -29,8 +29,14 @@
             justify-content: center;
             align-items: center;
         }
-
+        .message {
+            width: 80%; 
+            top: 20px;
+            position: fixed; /* Change position from fixed to relative */
+            z-index: 1000;  /* Increase z-index to ensure visibility */
+        }
         .container {
+            position: fixed;
             max-width: 400px;
             width: 100%;
             background: #fff;
@@ -159,6 +165,74 @@
             transform-origin: -8vw -23vh;
             box-shadow: 6vmin 0 1.454180470900316vmin currentColor;
         }
+
+        #postForm {
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            display: none; 
+            bottom: 20px;
+            right: 20%; 
+            position: fixed;
+            width: 60%;
+        }
+        form label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        form textarea, form input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        form button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            background-color: #007bff;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        form button:hover {
+            background-color: #0056b3;
+        }
+        .status-message {
+            margin: 20px 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .status-message.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .toggle-button {
+        display: inline-block;
+        padding: 10px 20px;
+        font-size: 16px;
+        font-weight: bold;
+        color: white;
+        background-color: #007bff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        text-align: center;
+        text-decoration: none;
+        bottom: 20px;
+        right: 20px;
+        position: fixed;
+        }
+
+        .toggle-button:hover {
+        background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
@@ -170,6 +244,13 @@
         <span></span>
         <span></span>
     </div>
+    <div class="message">
+    {{if .StatusMessage}}
+    <div class="status-message success">
+        {{if eq .StatusMessage "success"}}Post added successfully!{{end}}
+    </div>
+    {{end}}
+    </div>
     <div class="container">
         <h1>Hello, {{.Name}}</h1>
         <div class="button-group">
@@ -179,6 +260,29 @@
             <a href="/mylikes"><button>Go to MyLikes Page</button></a>
         </div>
     </div>
+    <button onclick="toggleForm()" class="toggle-button">Add a Post</button>
+
+    <form id="postForm" action="/addpost" method="post">
+        <label for="text">Text:</label>
+        <textarea id="text" name="text" required></textarea><br>
+        
+        <label for="category">Category:</label>
+        <input type="text" id="category" name="category" required><br>
+        
+        <button type="submit">Buzz</button>
+    </form>
+</div>
+
+<script>
+    function toggleForm() {
+        var form = document.getElementById("postForm");
+        if (form.style.display === "none" || form.style.display === "") {
+            form.style.display = "block";
+        } else {
+            form.style.display = "none";
+        }
+    }
+</script>
 </body>
 </html>
 

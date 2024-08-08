@@ -22,9 +22,14 @@ func RootHandler(w http.ResponseWriter, r *http.Request) {
         http.Error(w, err.Error(), http.StatusInternalServerError)
         return
     }
+    statusMessage := r.URL.Query().Get("status")
     tmpl.Execute(w, struct {
         Name string
-    }{Name: name})
+        StatusMessage string
+    }{
+        Name: name,
+        StatusMessage:  statusMessage,
+    })
 }
 
 
