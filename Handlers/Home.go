@@ -8,12 +8,11 @@ import (
 
 func RootHandler(w http.ResponseWriter, r *http.Request) {
     session, _ := store.Get(r, "mysession")
-
-    // Check if the user is authenticated
-    if auth, ok := session.Values["authenticated"].(bool); !ok || !auth {
-        http.Redirect(w, r, "/", http.StatusSeeOther)
+    if r.URL.Path == "/" {
+        http.Redirect(w, r, "/home", http.StatusFound)
         return
     }
+
 
     name, _ := session.Values["username"].(string)
 
