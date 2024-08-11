@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <title>Forum App</title>
     <style>
         * {
@@ -81,6 +82,80 @@
             background-color: #0056b3;
         }
 
+        /* Sidebar  */
+        .sidebar {
+            width: 250px;
+            color: #fff;
+            height: 100vh;
+            padding: 30px;
+            box-sizing: border-box;
+            position: fixed;
+            left: 0; 
+            top: 0;
+            display: flex;
+            flex-direction: column; 
+            justify-content: space-between; 
+            background-color: rgba(187, 187, 187, 0.33); 
+            box-shadow: 0 .4rem .8rem rgba(0, 0, 0, 0.33);
+            backdrop-filter: blur(7px); 
+        }
+
+        .sidebar img {
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            display: block;
+            margin: 0 auto 2rem auto;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+            flex-grow: 1;
+        }
+
+        .sidebar ul li {
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start; 
+        }
+
+        .sidebar ul li a, .login-button a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.2rem;
+            margin-left: 1rem;
+        }
+
+        .sidebar ul li i, .login-button i {
+            font-size: 24px;
+        }
+
+        .login-button {
+            margin-top: auto; 
+            padding: 0.5rem 1.5rem;
+            background-color: rgba(199, 199, 199, 0.33); 
+            border-radius: .8rem;
+            box-shadow: 0 .4rem .8rem rgba(126, 126, 126, 0.33);
+            backdrop-filter: blur(7px); 
+        }
+
+        .container {
+            margin-left: 250px; 
+            padding: 20px;
+        }
+
+        .container h1 {
+            margin-top: 0;
+        }
+
+        .greeting {
+            color: #fff;
+            font-size: 1.2rem;
+            margin-left: 1rem;
+        }
+                
         @keyframes move {
             100% {
                 transform: translate3d(0, 0, 1px) rotate(360deg);
@@ -244,6 +319,22 @@
         <span></span>
         <span></span>
     </div>
+
+    <div class="sidebar">
+        <img src="{{.ProfileImage}}" alt="Profile Picture">
+        <p class="greeting">Hello, {{.Name}}</p>
+        <ul>
+            <li><i class="fa-regular fa-user"></i><a href="/profile">Profile</a></li>
+            <li><i class="fa-regular fa-message"></i><a href="/myposts">Posts</a></li>
+            <li><i class="fa-regular fa-heart"></i><a href="/mylikes">Likes</a></li>
+            <li><i class="fa-regular fa-file-lines"></i><a href="/moderator">Moderation</a></li>
+            
+        </ul>
+        <div class="login-button">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i><a href="/login">Logout</a>
+        </div>
+    </div>
+
     <div class="message">
     {{if .StatusMessage}}
     <div class="status-message success">
