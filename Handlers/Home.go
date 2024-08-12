@@ -9,8 +9,8 @@ import (
 func RootHandler(w http.ResponseWriter, r *http.Request) {
     session, _ := store.Get(r, "mysession")
 
-    // Check if the user is authenticated
-    if auth, ok := session.Values["authenticated"].(bool); !ok || !auth {
+     // Check if the user is authenticated
+     if auth, ok := session.Values["authenticated"].(bool); !ok || !auth {
         http.Redirect(w, r, "/", http.StatusSeeOther)
         return
     }
