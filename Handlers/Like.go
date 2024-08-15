@@ -21,6 +21,7 @@ func LikeHandler(db *sql.DB) http.HandlerFunc {
         err := db.QueryRow("SELECT COUNT(*) FROM `like` WHERE user_id = ? AND post_id = ?", userID, postID).Scan(&existingLikeCount)
         if err != nil {
             http.Error(w, err.Error(), http.StatusInternalServerError)
+            RenderErrorPage(w, http.StatusInternalServerError) 
             return
         }
 
@@ -32,6 +33,7 @@ func LikeHandler(db *sql.DB) http.HandlerFunc {
         _, err = db.Exec("INSERT INTO `like` (user_id, post_id) VALUES (?, ?)", userID, postID)
         if err != nil {
             http.Error(w, err.Error(), http.StatusInternalServerError)
+            RenderErrorPage(w, http.StatusInternalServerError) 
             return
         }
         

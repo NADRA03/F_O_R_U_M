@@ -27,6 +27,8 @@ func RootHandler(w http.ResponseWriter, r *http.Request) {
     tmpl, err := template.ParseFiles("HTML/Home.html")
     if err != nil {
         http.Error(w, err.Error(), http.StatusInternalServerError)
+        RenderErrorPage(w, http.StatusInternalServerError) 
+        
         return
     }
     statusMessage := r.URL.Query().Get("status")

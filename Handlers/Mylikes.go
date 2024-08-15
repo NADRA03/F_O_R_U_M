@@ -26,6 +26,7 @@ func MyLikesHandler(db *sql.DB) http.HandlerFunc {
         `, userID)
         if err != nil {
             http.Error(w, err.Error(), http.StatusInternalServerError)
+            RenderErrorPage(w, http.StatusInternalServerError) 
             return
         }
         defer rows.Close()
@@ -49,6 +50,7 @@ func MyLikesHandler(db *sql.DB) http.HandlerFunc {
             err := rows.Scan(&post.PostID, &post.Text, &post.Media, &post.Date, &post.Category)
             if err != nil {
                 http.Error(w, err.Error(), http.StatusInternalServerError)
+                RenderErrorPage(w, http.StatusInternalServerError) 
                 return
             }
             posts = append(posts, post)
@@ -57,6 +59,7 @@ func MyLikesHandler(db *sql.DB) http.HandlerFunc {
         tmpl, err := template.ParseFiles("HTML/mylikes.html")
         if err != nil {
             http.Error(w, err.Error(), http.StatusInternalServerError)
+            RenderErrorPage(w, http.StatusInternalServerError) 
             return
         }
 
