@@ -5,9 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Moderator Page</title>
     <style>
+      @import url(https://fonts.googleapis.com/css?family=Righteous);
+
       body {
         width: 100%;
         font-family: Arial, sans-serif;
+        background-color: rgb(34,34,34)
       }
       th,
       td {
@@ -15,7 +18,8 @@
         text-align: left;
       }
       table {
-        background-color: rgba(255, 255, 255, 0.33);
+        width: 90vw;
+        background-color: rgba(0, 0, 0, 0.2);
         border-radius: 1rem;
         box-shadow: 0 0.4rem 0.8rem #0005;
         padding: 1rem;
@@ -23,27 +27,27 @@
         margin-right: 1rem;
         margin-bottom: 1rem;
         overflow: hidden;
-        backdrop-filter: blur(7px);
         border-collapse: collapse;
+        color: #ccc;
         
       }
 
       thead th {
-        background-color: rgba(213, 209, 222, 0.33);
+        background-color: rgba(0, 0, 0, 0.2);
         text-transform: capitalize;
         padding: 1rem;
         text-align: left;
-        border-bottom: 2px solid #ccc;
+        border-bottom: 2px solid #a1a1a1;
       }
 
       tbody tr:nth-child(even) {
-        background-color: rgba(249, 249, 249, 0.33);
+        background-color: rgba(0, 0, 0, 0.507);
       }
 
       tbody tr td {
         padding: 1rem;
         text-align: left;
-        border-top: 1px solid #ccc;
+        border-top: 1px solid #a1a1a1;
       }
 
       table thead th:first-child {
@@ -64,16 +68,18 @@
 
 
 .table-title {
-    font-size: 2rem;
     font-weight: bold;
     margin-bottom: 1rem;
-    color: #333; 
+    font-family: 'Righteous', serif;
+    margin: 0 0 10px 0;
+    font-size: 2em;
+    color: #5b209a;
 }
 
 .table-container {
     width: 70%;
     margin: 2rem auto;
-    background-color: rgba(187, 187, 187, 0.33); 
+    background-color: rgba(0, 0, 0, 0.2); 
     border-radius: .8rem;
     box-shadow: 0 .4rem .8rem rgba(0, 0, 0, 0.33);
     overflow: hidden;
@@ -83,275 +89,30 @@
 .table-container table {
     width: 97.5%;
     border-collapse: collapse;
-    background-color: rgba(255, 255, 255, 0.33); 
+    background-color: rgba(179, 179, 179, 0.33); 
 }
 
 .table-title-container {
     margin-bottom: 1rem;
     padding: 0.5rem;
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: rgba(155, 155, 155, 0.2);
     border-radius: 0.5rem 0.5rem 0 0 ;
     box-shadow: 0 .2rem .4rem rgba(0, 0, 0, 0.2);
 }
 
-
-      /* Background */
-      @keyframes move {
-        100% {
-          transform: translate3d(0, 0, 1px) rotate(360deg);
+h4 {
+            font-family: 'Righteous', serif;
+            margin: 0 0 10px 0;
+            font-size: 3em;
+            color: #a46ce1;
+            text-align: center;
         }
-      }
 
-      .background {
-        position: fixed;
-        width: 100vw;
-        height: 100vh;
-        top: 0;
-        left: 0;
-        background: #3e1e68;
-        overflow: hidden;
-        z-index: -12;
-      }
-
-      .background span {
-        width: 6vmin;
-        height: 6vmin;
-        border-radius: 6vmin;
-        backface-visibility: hidden;
-        position: absolute;
-        animation: move;
-        animation-duration: 31;
-        animation-timing-function: linear;
-        animation-iteration-count: infinite;
-      }
-
-      .background span:nth-child(0) {
-        color: #583c87;
-        top: 13%;
-        left: 61%;
-        animation-duration: 33s;
-        animation-delay: -1s;
-        transform-origin: 18vw 1vh;
-        box-shadow: 12vmin 0 2.2225488511743405vmin currentColor;
-      }
-      .background span:nth-child(1) {
-        color: #ffacac;
-        top: 34%;
-        left: 99%;
-        animation-duration: 125s;
-        animation-delay: -189s;
-        transform-origin: 23vw 4vh;
-        box-shadow: -12vmin 0 2.041331311529545vmin currentColor;
-      }
-      .background span:nth-child(2) {
-        color: #ffacac;
-        top: 82%;
-        left: 29%;
-        animation-duration: 64s;
-        animation-delay: -101s;
-        transform-origin: 19vw -21vh;
-        box-shadow: 12vmin 0 2.4358344356641646vmin currentColor;
-      }
-      .background span:nth-child(3) {
-        color: #ffacac;
-        top: 8%;
-        left: 91%;
-        animation-duration: 48s;
-        animation-delay: -13s;
-        transform-origin: -5vw 24vh;
-        box-shadow: -12vmin 0 2.3757456215203847vmin currentColor;
-      }
-      .background span:nth-child(4) {
-        color: #e45a84;
-        top: 16%;
-        left: 51%;
-        animation-duration: 27s;
-        animation-delay: -49s;
-        transform-origin: -6vw -16vh;
-        box-shadow: -12vmin 0 1.7269323248742312vmin currentColor;
-      }
-      .background span:nth-child(5) {
-        color: #583c87;
-        top: 41%;
-        left: 17%;
-        animation-duration: 161s;
-        animation-delay: -1s;
-        transform-origin: 18vw -19vh;
-        box-shadow: 12vmin 0 2.1435064640431865vmin currentColor;
-      }
-      .background span:nth-child(6) {
-        color: #e45a84;
-        top: 52%;
-        left: 52%;
-        animation-duration: 93s;
-        animation-delay: -97s;
-        transform-origin: -6vw -18vh;
-        box-shadow: 12vmin 0 1.606635559142397vmin currentColor;
-      }
-      .background span:nth-child(7) {
-        color: #ffacac;
-        top: 10%;
-        left: 15%;
-        animation-duration: 69s;
-        animation-delay: -80s;
-        transform-origin: 6vw -10vh;
-        box-shadow: -12vmin 0 1.5568209513791933vmin currentColor;
-      }
-      .background span:nth-child(8) {
-        color: #583c87;
-        top: 4%;
-        left: 45%;
-        animation-duration: 190s;
-        animation-delay: -23s;
-        transform-origin: 10vw -3vh;
-        box-shadow: 12vmin 0 2.3201396819968134vmin currentColor;
-      }
-      .background span:nth-child(9) {
-        color: #ffacac;
-        top: 31%;
-        left: 55%;
-        animation-duration: 113s;
-        animation-delay: -176s;
-        transform-origin: 0vw 0vh;
-        box-shadow: -12vmin 0 2.426323149928793vmin currentColor;
-      }
-      .background span:nth-child(10) {
-        color: #e45a84;
-        top: 69%;
-        left: 14%;
-        animation-duration: 27s;
-        animation-delay: -26s;
-        transform-origin: -8vw -6vh;
-        box-shadow: -12vmin 0 1.675945456014162vmin currentColor;
-      }
-      .background span:nth-child(11) {
-        color: #e45a84;
-        top: 78%;
-        left: 98%;
-        animation-duration: 10s;
-        animation-delay: -93s;
-        transform-origin: -3vw 22vh;
-        box-shadow: 12vmin 0 1.6549283666562482vmin currentColor;
-      }
-      .background span:nth-child(12) {
-        color: #583c87;
-        top: 50%;
-        left: 98%;
-        animation-duration: 81s;
-        animation-delay: -100s;
-        transform-origin: 2vw -7vh;
-        box-shadow: 12vmin 0 1.63287954230601vmin currentColor;
-      }
-      .background span:nth-child(13) {
-        color: #e45a84;
-        top: 41%;
-        left: 98%;
-        animation-duration: 96s;
-        animation-delay: -173s;
-        transform-origin: 1vw 2vh;
-        box-shadow: 12vmin 0 1.5742269063025196vmin currentColor;
-      }
-      .background span:nth-child(14) {
-        color: #e45a84;
-        top: 87%;
-        left: 9%;
-        animation-duration: 165s;
-        animation-delay: -71s;
-        transform-origin: 7vw 19vh;
-        box-shadow: 12vmin 0 2.4159085438295254vmin currentColor;
-      }
-      .background span:nth-child(15) {
-        color: #ffacac;
-        top: 82%;
-        left: 85%;
-        animation-duration: 123s;
-        animation-delay: -135s;
-        transform-origin: -9vw 19vh;
-        box-shadow: 12vmin 0 1.5040406888474254vmin currentColor;
-      }
-      .background span:nth-child(16) {
-        color: #583c87;
-        top: 59%;
-        left: 1%;
-        animation-duration: 69s;
-        animation-delay: -106s;
-        transform-origin: -24vw 23vh;
-        box-shadow: 12vmin 0 1.5455696499801261vmin currentColor;
-      }
-      .background span:nth-child(17) {
-        color: #e45a84;
-        top: 1%;
-        left: 72%;
-        animation-duration: 104s;
-        animation-delay: -86s;
-        transform-origin: -3vw 17vh;
-        box-shadow: 12vmin 0 1.7645518052911684vmin currentColor;
-      }
-      .background span:nth-child(18) {
-        color: #ffacac;
-        top: 86%;
-        left: 88%;
-        animation-duration: 184s;
-        animation-delay: -188s;
-        transform-origin: -23vw 2vh;
-        box-shadow: -12vmin 0 2.1674317186541083vmin currentColor;
-      }
-      .background span:nth-child(19) {
-        color: #e45a84;
-        top: 45%;
-        left: 70%;
-        animation-duration: 59s;
-        animation-delay: -24s;
-        transform-origin: -4vw 12vh;
-        box-shadow: 12vmin 0 2.475334214975595vmin currentColor;
-      }
-      .background span:nth-child(20) {
-        color: #e45a84;
-        top: 61%;
-        left: 2%;
-        animation-duration: 185s;
-        animation-delay: -138s;
-        transform-origin: 19vw 16vh;
-        box-shadow: -12vmin 0 2.419692378916553vmin currentColor;
-      }
-      .background span:nth-child(21) {
-        color: #583c87;
-        top: 5%;
-        left: 1%;
-        animation-duration: 73s;
-        animation-delay: -158s;
-        transform-origin: 9vw 1vh;
-        box-shadow: -12vmin 0 1.7815273966039697vmin currentColor;
-      }
     </style>
   </head>
   <body>
-    <div class="background">
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
     
-      <h1>Moderator Page</h1>
+      <h4>Moderator Page</h4>
       <!-- <form action="/moderator" method="post">
         <button type="submit">Create Tables</button>
     </form> -->
