@@ -37,7 +37,6 @@ func EditProfileHandler(db *sql.DB) http.HandlerFunc {
                 return
             }
 
-            // Update the user's information in the database
             _, err = db.Exec("UPDATE user SET username = ?, email = ?, password = ?, image = ? WHERE id = ?",
                 username, email, password, image, userID)
             if err != nil {
@@ -46,16 +45,14 @@ func EditProfileHandler(db *sql.DB) http.HandlerFunc {
                 return
             }
 
-            // Update the session information
             session.Values["username"] = username
+            session.Values["profileImage"] = image
             session.Save(r, w)
 
-            // Redirect to a success page or profile page
-            http.Redirect(w, r, "/", http.StatusSeeOther)
+            http.Redirect(w, r, "/settings", http.StatusSeeOther)
             return
         }
 
-        // Retrieve the current user information to pre-fill the form
         var username, email, image string
         err := db.QueryRow("SELECT username, email, image FROM user WHERE id = ?", userID).Scan(&username, &email, &image)
         if err != nil {

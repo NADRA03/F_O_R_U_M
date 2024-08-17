@@ -150,7 +150,7 @@ func isImage(url string) bool {
 // embedYouTube converts a YouTube URL to an embeddable URL
 func embedYouTube(url string) string {
 	// Regular expression to extract the video ID from a YouTube URL
-	re := regexp.MustCompile(`(?:youtube\.com/watch\?v=|youtu\.be/)([\w-]+)`)
+	re := regexp.MustCompile(`(?:youtube\.com/watch\?v=|youtu\.be/|youtube\.com/shorts/)([\w-]+)`)
 	match := re.FindStringSubmatch(url)
 	if len(match) > 1 {
 		return "https://www.youtube.com/embed/" + match[1]
