@@ -39,6 +39,7 @@ func LoginHandler(db *sql.DB) http.HandlerFunc {
         tmpl, err := template.ParseFiles("HTML/Login.html")
         if err != nil {
             http.Error(w, err.Error(), http.StatusInternalServerError)
+            RenderErrorPage(w, http.StatusInternalServerError) 
             return
         }
         tmpl.Execute(w, nil)

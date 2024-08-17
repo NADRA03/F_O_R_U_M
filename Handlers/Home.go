@@ -87,6 +87,8 @@ func RootHandler(db *sql.DB) http.HandlerFunc {
     tmpl, err := template.ParseFiles("HTML/Home.html")
     if err != nil {
         http.Error(w, err.Error(), http.StatusInternalServerError)
+        RenderErrorPage(w, http.StatusInternalServerError) 
+        
         return
     }
     statusMessage := r.URL.Query().Get("status")

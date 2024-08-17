@@ -41,12 +41,14 @@ func ModeratorHandler(db *sql.DB) http.HandlerFunc {
         tables, err := fetchTables(db)
         if err != nil {
             http.Error(w, err.Error(), http.StatusInternalServerError)
+            RenderErrorPage(w, http.StatusInternalServerError) 
             return
         }
 
         tmpl, err := template.ParseFiles("HTML/Moderator.html")
         if err != nil {
             http.Error(w, err.Error(), http.StatusInternalServerError)
+            RenderErrorPage(w, http.StatusInternalServerError) 
             return
         }
         tmpl.Execute(w, struct {

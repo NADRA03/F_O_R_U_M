@@ -23,6 +23,7 @@ func AddPostHandler(db *sql.DB) http.HandlerFunc {
             _, err := db.Exec("INSERT INTO post (user_id, text, media, date, category) VALUES (?, ?, '', CURRENT_TIMESTAMP, ?)", userID, text, category)
             if err != nil {
                 http.Error(w, err.Error(), http.StatusInternalServerError)
+                RenderErrorPage(w, http.StatusInternalServerError)  
                 return
             }
 
