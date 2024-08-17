@@ -16,7 +16,8 @@ func MyLikesHandler(db *sql.DB) http.HandlerFunc {
         }
 
         userID, _ := session.Values["id"].(int)
-
+        username, _ := session.Values["username"].(string)
+        image, _ := session.Values["profileImage"].(string)
         // Query to select posts liked by the user
         rows, err := db.Query(`
             SELECT p.post_id, p.text, p.media, p.date, p.category 
@@ -71,8 +72,12 @@ func MyLikesHandler(db *sql.DB) http.HandlerFunc {
                 Date     string
                 Category string
             }
+            Username      string
+            Image         string
         }{
             Posts:          posts,
+            Username:       username,
+            Image:          image,
         })
     }
 }

@@ -19,7 +19,8 @@ func LoginHandler(db *sql.DB) http.HandlerFunc {
 
             var id int
             var storedPassword string
-            err := db.QueryRow("SELECT id, password FROM user WHERE username = ?", username).Scan(&id, &storedPassword)
+            var image string
+            err := db.QueryRow("SELECT id, password, image FROM user WHERE username = ?", username).Scan(&id, &storedPassword, &image)
             if err != nil || password != storedPassword {
                 http.Error(w, "Invalid username or password", http.StatusUnauthorized)
                 return
@@ -28,6 +29,7 @@ func LoginHandler(db *sql.DB) http.HandlerFunc {
             session.Values["id"] = id
             session.Values["authenticated"] = true
             session.Values["username"] = username
+            session.Values["profileImage"] = image
             session.Save(r, w)
 
             http.Redirect(w, r, "/", http.StatusSeeOther)

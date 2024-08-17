@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile</title>
+    <link rel="stylesheet" href="/path/to/styles.css">
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&family=Noto+Sans+TC:wght@100..900&family=Raleway:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+        @import url(https://fonts.googleapis.com/css?family=Righteous);    
+    html, body {
+    height: 100%;
+    }
+    *, *:before, *:after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        position: relative;
+        }
+    body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgb(34,34,34);
+    }
+
+h1 {
+    margin-left: 30px;
+    margin-top: 60px;
+    font-family: 'Righteous', serif;
+            margin-bottom: 30px;
+            font-size: 50px;
+            color: rgb(162, 105, 224);
+}
+
+form {
+margin-left: 30px;
+border-radius: 20px;
+font-family: "Roboto", sans-serif;
+font-weight: 900;
+font-weight: lighter;
+max-width: 500px;
+max-height: 500px;
+width: 100%;
+background: transparent;
+}
+
+label {
+font-family: 'Righteous', serif;
+bottom: 5px;
+font-weight: 400;
+font-size: 22px;
+color: rgba(255, 255, 255, 1);
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+            font-family: "Raleway", sans-serif;
+            margin-bottom: 20px;
+            padding-left: 10px;
+            font-family: "Roboto", sans-serif;
+            font-weight: 400;
+            font-size: 15px;
+            width: 100%;
+            height: 45px;
+            border: none;
+}
+input[type="submit"] {
+            font-family: 'Righteous', serif;
+            font-weight: 900;
+            font-size: 40px;
+            width: 100%;
+            padding: 5px;
+            background-color: transparent;
+            border: none;
+            color: rgb(162, 105, 224);
+            cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background-color: rgba(0,0,0,0.2);
+}
+
+input:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+@media (max-width: 480px) {
+    form {
+        padding: 15px;
+        width: 90%;
+    }
+}
+
+    </style>
+</head>
+<body>
+    <h1>settings</h1>
+    <form action="/edit" method="post">
+        <label for="username">Username:</label><br>
+        <input type="text" id="username" name="username" value="{{.Username}}" required><br>
+        
+        <label for="email">Email:</label><br>
+        <input type="email" id="email" name="email" value="{{.Email}}" required><br>
+
+        <label for="password">Password:</label><br>
+        <input type="password" id="password" name="password" required><br>
+
+        <label for="image">Profile Image URL:</label><br>
+        <input type="text" id="image" name="image" value="{{.Image}}"><br><br>
+
+        <input type="submit" value="Update">
+    </form>
+</body>
+</html>

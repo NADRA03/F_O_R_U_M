@@ -12,19 +12,21 @@ func CommentHandler(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		session, _ := store.Get(r, "mysession")
 
-		if auth, ok := session.Values["authenticated"].(bool); !ok || !auth {
-			http.Redirect(w, r, "/", http.StatusSeeOther)
-			return
-		}
-
-		userID, _ := session.Values["id"].(int)
-		postIDStr := r.URL.Query().Get("post_id")
-		postID, err := strconv.Atoi(postIDStr)
-		if err != nil {
-			http.Error(w, "Invalid post ID", http.StatusBadRequest)
-			RenderErrorPage(w, http.StatusBadRequest)
-			return
-		}
+        if auth, ok := session.Values["authenticated"].(bool); !ok || !auth {
+            http.Redirect(w, r, "/", http.StatusSeeOther)
+            return
+        }
+        
+        image,_ := session.Values["profileImage"].(string)
+        username, _ := session.Values["username"].(string)
+        userID, _ := session.Values["id"].(int)
+        postIDStr := r.URL.Query().Get("post_id")
+        postID, err := strconv.Atoi(postIDStr)
+        if err != nil {
+            http.Error(w, "Invalid post ID", http.StatusBadRequest)
+            RenderErrorPage(w, http.StatusBadRequest)
+            return
+        }
 
 		if r.Method == http.MethodPost {
 			comment := r.FormValue("comment")
@@ -112,39 +114,42 @@ func CommentHandler(db *sql.DB) http.HandlerFunc {
 			comments = append(comments, comment)
 		}
 
-		// Render the template with post and comments
-		tmpl, err := template.ParseFiles("HTML/comment.html")
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-            RenderErrorPage(w, http.StatusInternalServerError)   
-			return
-		}
-
-		statusMessage := r.URL.Query().Get("status")
-		tmpl.Execute(w, struct {
-			Post struct {
-				PostID    int
-				Text      string
-				Media     string
-				MediaType string
-				Date      string
-				Category  string
-				Username  string
-				Image     string
-			}
-			Comments []struct {
-				CommentID int
-				UserID    int
-				Comment   string
-				Date      string
-				Username  string
-				Image     string
-			}
-			StatusMessage string
-		}{
-			Post:          post,
-			Comments:      comments,
-			StatusMessage: statusMessage,
-		})
-	}
+        tmpl, err := template.ParseFiles("HTML/comment.html")
+        if err != nil {
+            http.Error(w, err.Error(), http.StatusInternalServerError)
+            RenderErrorPage(w, http.StatusInternalServerError) 
+            return
+        }
+      
+        statusMessage := r.URL.Query().Get("status")
+        tmpl.Execute(w, struct {
+            Post           struct {
+                PostID      int
+                Text        string
+                Media       string
+                MediaType   string
+                Date        string
+                Category    string
+                Username    string
+                Image       string
+            }
+            Comments       []struct {
+                CommentID    int
+                UserID       int
+                Comment      string
+                Date         string
+                Username     string
+                Image        string
+            }
+            StatusMessage string
+            Image         string
+            Username      string
+        }{  
+            Username:       username,
+            Image:          image,
+            Post:           post,
+            Comments:       comments,
+            StatusMessage:  statusMessage,
+        })
+    }
 }

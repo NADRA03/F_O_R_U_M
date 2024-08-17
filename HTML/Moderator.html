@@ -5,11 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Moderator Page</title>
     <style>
+      @import url('https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&family=Noto+Sans+TC:wght@100..900&family=Raleway:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
       @import url(https://fonts.googleapis.com/css?family=Righteous);
 
       body {
         width: 100%;
-        font-family: Arial, sans-serif;
+        font-family: "Raleway", sans-serif;
         background-color: rgb(34,34,34)
       }
       th,
@@ -18,7 +19,6 @@
         text-align: left;
       }
       table {
-        width: 90vw;
         background-color: rgba(0, 0, 0, 0.2);
         border-radius: 1rem;
         box-shadow: 0 0.4rem 0.8rem #0005;
@@ -70,24 +70,24 @@
 .table-title {
     font-weight: bold;
     margin-bottom: 1rem;
-    font-family: 'Righteous', serif;
     margin: 0 0 10px 0;
     font-size: 2em;
     color: #5b209a;
 }
 
 .table-container {
-    width: 70%;
+    max-width: 70%;
     margin: 2rem auto;
     background-color: rgba(0, 0, 0, 0.2); 
     border-radius: .8rem;
     box-shadow: 0 .4rem .8rem rgba(0, 0, 0, 0.33);
-    overflow: hidden;
+    overflow-x: auto; /* Allow horizontal scrolling if needed */
     backdrop-filter: blur(7px); 
 }
 
 .table-container table {
-    width: 97.5%;
+    table-layout: fixed; 
+    width: 100%;
     border-collapse: collapse;
     background-color: rgba(179, 179, 179, 0.33); 
 }
@@ -95,7 +95,7 @@
 .table-title-container {
     margin-bottom: 1rem;
     padding: 0.5rem;
-    background-color: rgba(155, 155, 155, 0.2);
+    background-color: white;
     border-radius: 0.5rem 0.5rem 0 0 ;
     box-shadow: 0 .2rem .4rem rgba(0, 0, 0, 0.2);
 }
@@ -122,7 +122,6 @@ h4 {
         <div class="table-title-container">
             <h2 class="table-title">Table: {{.Name}}</h2>
         </div>
-      
       <table>
         <thead>
           <tr>
