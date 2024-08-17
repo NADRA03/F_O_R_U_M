@@ -11,7 +11,7 @@ func MyLikesHandler(db *sql.DB) http.HandlerFunc {
         session, _ := store.Get(r, "mysession")
 
         if auth, ok := session.Values["authenticated"].(bool); !ok || !auth {
-            http.Redirect(w, r, "/", http.StatusSeeOther)
+            http.Redirect(w, r, "/login", http.StatusSeeOther)
             return
         }
 

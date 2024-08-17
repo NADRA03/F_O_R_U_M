@@ -21,17 +21,29 @@ type Post struct {
 type ProfilePageData struct {
 	Username string
 	Posts    []Post
+	Name string
+	ProfileImage string
 }
 
 func ViewProfileHandler(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		session, _ := store.Get(r, "mysession")
 		username := r.URL.Query().Get("username")
 		if username == "" {
 			http.Error(w, "Username is required", http.StatusBadRequest)
 			RenderErrorPage(w, http.StatusBadRequest)
 			return
 		}
-
+		name, ok := session.Values["username"].(string)
+		if !ok || name == "" {
+			name = defaultName
+		}
+	
+		profileImage, ok := session.Values["profileImage"].(string)
+	
+		if !ok || profileImage == "" {
+			profileImage = defaultProfileImage 
+		}
 		query := `
             SELECT post.post_id, user.username, user.image, post.text, post.media, post.date, post.category
             FROM post
@@ -82,6 +94,8 @@ func ViewProfileHandler(db *sql.DB) http.HandlerFunc {
 		data := ProfilePageData{
 			Username: username,
 			Posts:    posts,
+			Name:     name, 
+            ProfileImage: profileImage,
 		}
 
 		if err := tmpl.Execute(w, data); err != nil {

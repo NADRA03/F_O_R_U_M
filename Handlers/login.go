@@ -13,6 +13,14 @@ func LoginHandler(db *sql.DB) http.HandlerFunc {
     return func(w http.ResponseWriter, r *http.Request) {
         session, _ := store.Get(r, "mysession")
 
+        if r.URL.Query().Get("logout") == "true" {
+            session.Options.MaxAge = -1
+            session.Save(r, w)
+
+            http.Redirect(w, r, "/login", http.StatusSeeOther)
+            return
+        }
+
         if r.Method == http.MethodPost {
             username := r.FormValue("username")
             password := r.FormValue("password")

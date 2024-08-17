@@ -25,14 +25,6 @@ func EditProfileHandler(db *sql.DB) http.HandlerFunc {
             password := r.FormValue("password")
             image := r.FormValue("image")
 
-			// fmt.Println("username: ", username)
-			// fmt.Println("email: ", email)
-			// fmt.Println("password: ", password)
-			// fmt.Println("image: ", image)
-
-            // Validate new information (add your validation logic here)
-
-            // Check if user exists before updating
             var existingID int
             err := db.QueryRow("SELECT id FROM user WHERE id = ?", userID).Scan(&existingID)
             if err != nil {

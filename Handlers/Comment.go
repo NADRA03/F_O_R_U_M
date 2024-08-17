@@ -11,15 +11,18 @@ import (
 func CommentHandler(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		session, _ := store.Get(r, "mysession")
-
-        if auth, ok := session.Values["authenticated"].(bool); !ok || !auth {
-            http.Redirect(w, r, "/", http.StatusSeeOther)
-            return
-        }
         
-        image,_ := session.Values["profileImage"].(string)
-        username, _ := session.Values["username"].(string)
-        userID, _ := session.Values["id"].(int)
+		username, ok := session.Values["username"].(string)
+		if !ok || username == "" {
+			username = defaultName
+		}
+	
+		image, ok := session.Values["profileImage"].(string)
+	
+		if !ok || image == "" {
+			image = defaultProfileImage 
+		}
+
         postIDStr := r.URL.Query().Get("post_id")
         postID, err := strconv.Atoi(postIDStr)
         if err != nil {
@@ -29,8 +32,12 @@ func CommentHandler(db *sql.DB) http.HandlerFunc {
         }
 
 		if r.Method == http.MethodPost {
+			if auth, ok := session.Values["authenticated"].(bool); !ok || !auth {
+				http.Redirect(w, r, "/login", http.StatusSeeOther)
+				return
+			}
 			comment := r.FormValue("comment")
-
+            userID, _ := session.Values["id"].(int)
 			_, err := db.Exec("INSERT INTO comment (user_id, post_id, comment, date) VALUES (?, ?, ?, CURRENT_TIMESTAMP)", userID, postID, comment)
 			if err != nil {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
