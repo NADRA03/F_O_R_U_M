@@ -24,7 +24,6 @@ func ProfileHandler(db *sql.DB) http.HandlerFunc {
             http.Redirect(w, r, "/login", http.StatusSeeOther)
             return
         }
-
         username, _ := session.Values["username"].(string)
         
         var profileData ProfileData

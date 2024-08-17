@@ -16,13 +16,13 @@ func MyPostsHandler(db *sql.DB) http.HandlerFunc {
 
 		// Check if the user is authenticated; if not, redirect to the home page
 		if auth, ok := session.Values["authenticated"].(bool); !ok || !auth {
-			http.Redirect(w, r, "/", http.StatusSeeOther)
+			http.Redirect(w, r, "/login", http.StatusSeeOther)
 			return
 		}
 
 		// Get the user ID from the session
 		userID, _ := session.Values["id"].(int)
-
+        
 		// Handle POST request: inserting a new post into the database
 		if r.Method == http.MethodPost {
 			text := r.FormValue("text")
