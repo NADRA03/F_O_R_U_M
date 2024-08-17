@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
 @import url(https://fonts.googleapis.com/css?family=Righteous);
 
@@ -32,7 +33,7 @@
 
 
         h1 {
-        margin-left: 35%;
+        margin-left: 32.5%;
         display: inline-block;
         color: white;
         font-family: 'Righteous', serif;
@@ -88,7 +89,7 @@
         .container {
         font-family: "Raleway", sans-serif;
         position: relative;
-        width: 80%;
+        width: 70%;
         font-size: 20px;
         margin: 0 auto;
         padding: 20px;
@@ -273,9 +274,112 @@
         #mediaInput {
         padding-top: 8px;
         }
+
+     
+          
+#sidebar {
+    width: 250px;
+    color: #fff;
+    height: 100vh;
+    padding: 30px;
+    box-sizing: border-box;
+    display: flex;
+    position: fixed;
+    left: -300px;
+    top: 0;
+    flex-direction: column; 
+    justify-content: space-between;
+    transition: left 0.3s ease; /* Smooth transition */ 
+    background-color:  rgb(91, 32, 154,0.7); 
+    box-shadow: 0 .4rem .8rem rgba(0, 0, 0, 0.33);
+
+}
+.sidebar img {
+    border-radius: 50%;
+    width: 160px;
+    height: 160px;
+    object-fit: cover; 
+    display: block;
+    margin: 0 auto 2rem auto;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0px;
+    flex-grow: 1;
+    font-family: 'Righteous', serif;
+}
+
+.sidebar ul li {
+    position: relative;
+    padding-top: 20px;
+    margin: 20px 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; 
+}
+.sidebar ul li a {
+    margin-top: 8px;
+}
+.sidebar ul li a, .login-button a {
+    font-family: 'Righteous', serif;
+    text-decoration: none;
+    font-size: 1.7rem;
+    margin-left: 1rem;
+    color: rgba(162, 105, 224,0.5);
+}  
+.sidebar ul li i, .login-button i {
+    font-size: 25px;
+    color: rgba(162, 105, 224,0.7);
+}
+
+.greeting {
+    color: rgb(162, 105, 224);
+    font-family: 'Righteous', serif;
+    font-size: 2em;
+}
+.login-button {
+    margin-top: auto; 
+    padding: 0.5rem 1.5rem;
+    background-color: rgba(0,0,0,0.2); 
+    border-radius: .8rem;
+}
+#bar-button {
+        display: inline-block;
+        position: fixed;
+        top: 0;
+        left: 20px;
+        z-index: 2;
+        background-color: transparent; 
+        border: none;
+        cursor: pointer;
+        }
+        #bar-button svg {
+        width: 100px; 
+        height: 100px;
+        fill: #5b209a; 
+        }
     </style>
 </head>
 <body>
+    <div class="sidebar" id="sidebar">
+        {{range $index, $post := .Posts}}
+        {{if eq $index 0}}
+        <img src="{{.Image}}" alt="Profile Picture">
+        <p class="greeting">@{{.Username}}</p>
+        {{end}}
+        {{end}}
+        <ul>
+            <li><a href="/">home</a></li>
+            <li><a href="/unknown">settings</a></li>
+            <li></i><a href="/myposts">posts</a></li>
+            <li></i><a href="/mylikes">likes</a></li>
+            <li><a href="/moderator">Moderation</a></li>      
+        </ul>
+        <div class="login-button">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i><a href="/login">Logout</a>
+        </div>
+    </div>
     <div class="container">
         {{if .StatusMessage}}
         <div class="status-message success">
@@ -283,6 +387,7 @@
         </div>
         {{end}}
         <h1 data-shadow='Buzzer'>Buzzer</h1>
+        <button class="bar-button" id="bar-button" onclick="toggleBar()"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="rgba(162, 105, 224,0.7)" data-darkreader-inline-stroke="" style="--darkreader-inline-stroke: rgba(164, 108, 225, 0.7);"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M7 12C7 13.1046 6.10457 14 5 14C3.89543 14 3 13.1046 3 12C3 10.8954 3.89543 10 5 10C6.10457 10 7 10.8954 7 12Z" fill="rgba(162, 105, 224,0.7)" data-darkreader-inline-fill="" style="--darkreader-inline-fill: rgba(78, 27, 132, 0.7);"></path> <path d="M21 12C21 13.1046 20.1046 14 19 14C17.8954 14 17 13.1046 17 12C17 10.8954 17.8954 10 19 10C20.1046 10 21 10.8954 21 12Z" fill="rgba(162, 105, 224,0.7)" data-darkreader-inline-fill="" style="--darkreader-inline-fill: rgba(78, 27, 132, 0.7);"></path> <path opacity="0.5" d="M14 12C14 13.1046 13.1046 14 12 14C10.8954 14 10 13.1046 10 12C10 10.8954 10.8954 10 12 10C13.1046 10 14 10.8954 14 12Z" fill="rgba(162, 105, 224,0.7)" data-darkreader-inline-fill="" style="--darkreader-inline-fill: rgba(78, 27, 132, 0.7);"></path> </g></svg></button>
          
         <div class="profile">
         {{range $index, $post := .Posts}}
@@ -292,7 +397,7 @@
         {{end}}
         {{end}}
         </div>
-
+         
         {{if .Posts}}
         {{range .Posts}}
         <div class="post">
@@ -319,13 +424,14 @@
         <p>No posts available.</p>
         {{end}}
         <button onclick="toggleForm()" class="toggle-button">
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#5b209a" data-darkreader-inline-stroke="" style="--darkreader-inline-stroke: #a269e0;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path opacity="0.5" d="M12 22C7.28595 22 4.92893 22 3.46447 20.5355C2 19.0711 2 16.714 2 12C2 7.28595 2 4.92893 3.46447 3.46447C4.92893 2 7.28595 2 12 2C16.714 2 19.0711 2 20.5355 3.46447C22 4.92893 22 7.28595 22 12C22 16.714 22 19.0711 20.5355 20.5355C19.0711 22 16.714 22 12 22Z" fill="#222222" data-darkreader-inline-fill="" style="--darkreader-inline-fill: #222222;"></path> <path d="M12 8.25C12.4142 8.25 12.75 8.58579 12.75 9V11.25H15C15.4142 11.25 15.75 11.5858 15.75 12C15.75 12.4142 15.4142 12.75 15 12.75H12.75L12.75 15C12.75 15.4142 12.4142 15.75 12 15.75C11.5858 15.75 11.25 15.4142 11.25 15V12.75H9C8.58579 12.75 8.25 12.4142 8.25 12C8.25 11.5858 8.58579 11.25 9 11.25H11.25L11.25 9C11.25 8.58579 11.5858 8.25 12 8.25Z" fill="#1C274C" data-darkreader-inline-fill="" style="--darkreader-inline-fill: #222222;"></path> </g></svg>
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#5b209a" data-darkreader-inline-stroke="" style="--darkreader-inline-stroke: rgb(162, 105, 224);"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path opacity="0.5" d="M12 22C7.28595 22 4.92893 22 3.46447 20.5355C2 19.0711 2 16.714 2 12C2 7.28595 2 4.92893 3.46447 3.46447C4.92893 2 7.28595 2 12 2C16.714 2 19.0711 2 20.5355 3.46447C22 4.92893 22 7.28595 22 12C22 16.714 22 19.0711 20.5355 20.5355C19.0711 22 16.714 22 12 22Z" fill="#222222" data-darkreader-inline-fill="" style="--darkreader-inline-fill: #222222;"></path> <path d="M12 8.25C12.4142 8.25 12.75 8.58579 12.75 9V11.25H15C15.4142 11.25 15.75 11.5858 15.75 12C15.75 12.4142 15.4142 12.75 15 12.75H12.75L12.75 15C12.75 15.4142 12.4142 15.75 12 15.75C11.5858 15.75 11.25 15.4142 11.25 15V12.75H9C8.58579 12.75 8.25 12.4142 8.25 12C8.25 11.5858 8.58579 11.25 9 11.25H11.25L11.25 9C11.25 8.58579 11.5858 8.25 12 8.25Z" fill="#1C274C" data-darkreader-inline-fill="" style="--darkreader-inline-fill: #222222;"></path> </g></svg>
         </button>
         <form id="postForm" action="/myposts" method="post">
             <label for="text">Text:</label>
             <textarea id="text" name="text" required></textarea><br>
             <label for="category">Category:</label>
             <select id="category" name="category" required>
+                <option value="General" selected></option>>#General</option>
                 <option value="Memes">#Memes</option>
                 <option value="News">#News</option>
                 <option value="Politics">#Politics</option>
@@ -365,6 +471,23 @@
             mediaInput.style.display = 'block';
         } else {
             mediaInput.style.display = 'none';
+        }
+        }
+
+        function toggleBar() {
+        var input = document.getElementById('bar-button'); 
+        var computedStyle = window.getComputedStyle(input);
+        if (computedStyle.left === '20px') {
+        input.style.left = '270px'; 
+        } else {
+        input.style.left = '20px';
+        }
+        input = document.getElementById('sidebar');
+        var computedStyleBar = window.getComputedStyle(input);
+        if (computedStyleBar.left === '-300px') {
+        input.style.left = '0'; // Move into view
+        } else {
+        input.style.left = '-300px'; // Move out of view
         }
         }
     </script>

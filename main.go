@@ -17,7 +17,7 @@ func main() {
     }
     defer db.Close()
 
-    http.HandleFunc("/", Forum.RootHandler)
+    http.HandleFunc("/", Forum.RootHandler(db))
     http.HandleFunc("/moderator", Forum.ModeratorHandler(db))
     http.HandleFunc("/login", Forum.LoginHandler(db))
     http.HandleFunc("/signup", Forum.SignupHandler(db))

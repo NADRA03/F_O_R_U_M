@@ -16,7 +16,9 @@ func CommentHandler(db *sql.DB) http.HandlerFunc {
             http.Redirect(w, r, "/", http.StatusSeeOther)
             return
         }
-
+        
+        image,_ := session.Values["profileImage"].(string)
+        username, _ := session.Values["username"].(string)
         userID, _ := session.Values["id"].(int)
         postIDStr := r.URL.Query().Get("post_id")
         postID, err := strconv.Atoi(postIDStr)
@@ -113,7 +115,7 @@ func CommentHandler(db *sql.DB) http.HandlerFunc {
             http.Error(w, err.Error(), http.StatusInternalServerError)
             return
         }
-
+      
         statusMessage := r.URL.Query().Get("status")
         tmpl.Execute(w, struct {
             Post           struct {
@@ -135,7 +137,11 @@ func CommentHandler(db *sql.DB) http.HandlerFunc {
                 Image        string
             }
             StatusMessage string
-        }{
+            Image         string
+            Username      string
+        }{  
+            Username:       username,
+            Image:          image,
             Post:           post,
             Comments:       comments,
             StatusMessage:  statusMessage,
