@@ -3,30 +3,176 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <title>My Likes</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
+@import url(https://fonts.googleapis.com/css?family=Righteous);
+
+*, *:before, *:after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  position: relative;
+  }
+
+html, body {
+  height: 100%;
+  }
+  body {
+    background-color: rgb(34,34,34);
+    }
+  body:before {
+    content: '';
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 0;
+    }
+
+h1 {
+  margin-left: 32.5%;
+  display: inline-block;
+  color: white;
+  font-family: 'Righteous', serif;
+  font-size: 7em; 
+  text-shadow: .03em .03em 0 rgb(34,34,34);
+  }
+  h1:after {
+    content: attr(data-shadow);
+    position: absolute;
+    top: .06em; left: .06em;
+    z-index: -1;
+    text-shadow: none;
+    background-image:
+      linear-gradient(
+        45deg,
+        transparent 45%,
+        white 45%,
+        white 55%,
+        transparent 0
+        );
+    background-size: .05em .05em;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  
+    animation: shad-anim 15s linear infinite;
+    }
+
+@keyframes shad-anim {
+  0% {background-position: 0 0}
+  0% {background-position: 100% -100%}
+  }
+
+
+
+
+#sidebar {
+    width: 250px;
+    color: #fff;
+    height: 100vh;
+    padding: 30px;
+    box-sizing: border-box;
+    display: flex;
+    position: fixed;
+    left: -300px;
+    top: 0;
+    flex-direction: column; 
+    justify-content: space-between;
+    transition: left 0.3s ease; /* Smooth transition */ 
+    background-color:  rgb(91, 32, 154,0.7); 
+    box-shadow: 0 .4rem .8rem rgba(0, 0, 0, 0.33);
+
+}
+.sidebar img {
+    border-radius: 50%;
+    width: 160px;
+    height: 160px;
+    object-fit: cover; 
+    display: block;
+    margin: 0 auto 2rem auto;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0px;
+    flex-grow: 1;
+    font-family: 'Righteous', serif;
+}
+
+.sidebar ul li {
+    position: relative;
+    padding-top: 20px;
+    margin: 20px 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; 
+}
+.sidebar ul li a {
+    margin-top: 8px;
+}
+.sidebar ul li a, .login-button a {
+    font-family: 'Righteous', serif;
+    text-decoration: none;
+    font-size: 1.7rem;
+    margin-left: 1rem;
+    color: rgba(162, 105, 224,0.5);
+}  
+.sidebar ul li i, .login-button i {
+    font-size: 25px;
+    color: rgba(162, 105, 224,0.7);
+}
+
+.greeting {
+    color: rgb(162, 105, 224);
+    font-family: 'Righteous', serif;
+    font-size: 2em;
+}
+.login-button {
+    margin-top: auto; 
+    padding: 0.5rem 1.5rem;
+    background-color: rgba(0,0,0,0.2); 
+    border-radius: .8rem;
+}
+        #bar-button {
+        display: inline-block;
+        position: fixed;
+        top: 3px;
+        left: 20px; 
+        background-color: transparent; 
+        border: none;
+        cursor: pointer;
         }
+        #bar-button svg {
+        width: 100px; 
+        height: 100px;
+        fill: #5b209a; 
+        }
+
+
         .container {
-            width: 80%;
+            font-family: "Raleway", sans-serif;
+            position: relative;
+            width: 70%;
+            font-size: 20px;
             margin: 0 auto;
             padding: 20px;
+            z-index: 1; /* Ensures the content stays above the canvas */
         }
         .post {
             margin: 20px 0;
             padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            background-color: #f9f9f9;
+            border-width: 2px;
+            border-radius: 20px;
+            background-color: rgba(0, 0, 0, 0.2);
+            color: rgb(255, 255, 255)
         }
         .post h2 {
+            font-family: 'Righteous', serif;
             margin: 0 0 10px 0;
-            font-size: 1.5em;
+            font-size: 2em;
+            color: #5b209a;
         }
         .post p {
+            font-weight: lighter;
             margin: 5px 0;
             font-size: 1em;
         }
@@ -47,36 +193,12 @@
         .post .icons a:hover {
             color: #0056b3;
         }
-        form {
-            margin: 20px 0;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            background-color: #f9f9f9;
-        }
-        form label {
-            display: block;
-            margin: 10px 0 5px;
-        }
-        form textarea, form input[type="text"] {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-        form button {
-            margin-top: 10px;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
-            background-color: #007bff;
-            color: white;
-            font-size: 16px;
-            cursor: pointer;
-        }
-        form button:hover {
-            background-color: #0056b3;
+        h4 {
+            font-family: 'Righteous', serif;
+            margin: 0 0 10px 0;
+            font-size: 3em;
+            color: #a46ce1;
+            text-align: center;
         }
         .status-message {
             margin: 20px 0;
@@ -91,18 +213,33 @@
     </style>
 </head>
 <body>
-
+    <div class="sidebar" id="sidebar">
+        <img src="{{.Image}}" alt="Profile Picture">
+        <p class="greeting">@{{.Username}}</p>
+        <ul>
+            <li><a href="/">home</a></li>
+            <li><a href="/unknown">settings</a></li>
+            <li></i><a href="/myposts">posts</a></li>
+            <li></i><a href="/mylikes">likes</a></li>
+            <li><a href="/moderator">Moderation</a></li>      
+        </ul>
+        <div class="login-button">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i><a href="/login">Logout</a>
+        </div>
+    </div>
     <div class="container">
-        <h1>My Likes</h1>
+        <h1 data-shadow='Buzzer'>Buzzer</h1>
+        <button class="bar-button" id="bar-button" onclick="toggleBar()"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="rgba(162, 105, 224,0.7)" data-darkreader-inline-stroke="" style="--darkreader-inline-stroke: rgba(164, 108, 225, 0.7);"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M7 12C7 13.1046 6.10457 14 5 14C3.89543 14 3 13.1046 3 12C3 10.8954 3.89543 10 5 10C6.10457 10 7 10.8954 7 12Z" fill="rgba(162, 105, 224,0.7)" data-darkreader-inline-fill="" style="--darkreader-inline-fill: rgba(78, 27, 132, 0.7);"></path> <path d="M21 12C21 13.1046 20.1046 14 19 14C17.8954 14 17 13.1046 17 12C17 10.8954 17.8954 10 19 10C20.1046 10 21 10.8954 21 12Z" fill="rgba(162, 105, 224,0.7)" data-darkreader-inline-fill="" style="--darkreader-inline-fill: rgba(78, 27, 132, 0.7);"></path> <path opacity="0.5" d="M14 12C14 13.1046 13.1046 14 12 14C10.8954 14 10 13.1046 10 12C10 10.8954 10.8954 10 12 10C13.1046 10 14 10.8954 14 12Z" fill="rgba(162, 105, 224,0.7)" data-darkreader-inline-fill="" style="--darkreader-inline-fill: rgba(78, 27, 132, 0.7);"></path> </g></svg></button>
+        <h4>Favorites</h4>
         {{if .Posts}}
         {{range .Posts}}
         <div class="post">
-            <h2>{{.Category}}</h2>
+            <h2>#{{.Category}}</h2>
             <p class="date">{{.Date}}</p>
             <p>{{.Text}}</p>
             <div class="icons">
-                <a href="/like?post_id={{.PostID}}">👍 Like</a>
-                <a href="/comment?post_id={{.PostID}}">💬 Comment</a>
+                <a href="/like?post_id={{.PostID}}"><svg viewBox="0 0 24 24" fill="none" width="50" height="50" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4 9.40652C3.44772 9.40652 3 9.85424 3 10.4065V18.4065C3 20.0634 4.34315 21.4065 6 21.4065H9V9.40652H4Z" fill="rgba(0, 0, 0, 0.2)" data-darkreader-inline-fill="" style="--darkreader-inline-fill: rgba(0, 0, 0, 0.2);"></path> <path d="M14.3059 4.16184C13.9067 2.9643 12.3868 2.60551 11.4942 3.4981L7.87868 7.11364C7.31607 7.67624 7 8.43931 7 9.23495V20.4065C7 20.9588 7.44772 21.4065 8 21.4065H15.6812C16.8813 21.4065 17.9659 20.6913 18.4386 19.5883L20.7574 14.1778C20.9175 13.8043 21 13.4023 21 12.996V12.4065C21 10.7497 19.6569 9.40653 18 9.40653H14.2808L14.4771 8.62115C14.8452 7.14867 14.7858 5.60175 14.3059 4.16184Z" fill="rgba(0, 0, 0, 0.2)" data-darkreader-inline-fill="" style="--darkreader-inline-fill: rgba(0, 0, 0, 0.2);"></path> </g></svg></a>
+                <a href="/comment?post_id={{.PostID}}"><svg viewBox="0 0 24 24" fill="none" width="50" height="50"  xmlns="http://www.w3.org/2000/svg" stroke="#a269e0" data-darkreader-inline-stroke="" style="--darkreader-inline-stroke: #a46ce1;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M5.20713 15.7929C4.95238 15.5382 4.58029 15.4401 4.23309 15.5363C3.88589 15.6325 3.61726 15.908 3.52988 16.2575L2.52988 20.2575C2.44468 20.5983 2.54453 20.9587 2.79291 21.2071C3.04129 21.4555 3.40178 21.5554 3.74256 21.4702L7.74256 20.4702C8.09207 20.3828 8.36757 20.1142 8.46374 19.767C8.5599 19.4198 8.46188 19.0477 8.20713 18.7929L5.20713 15.7929Z" fill="rgba(0, 0, 0, 0.2)" data-darkreader-inline-fill="" style="--darkreader-inline-fill: rgba(0, 0, 0, 0.2);"></path> <path d="M12 2.5C6.75329 2.5 2.5 6.75329 2.5 12C2.5 17.2467 6.75329 21.5 12 21.5C17.2467 21.5 21.5 17.2467 21.5 12C21.5 6.75329 17.2467 2.5 12 2.5Z" fill="rgba(0, 0, 0, 0.2)" data-darkreader-inline-fill="" style="--darkreader-inline-fill: rgba(0, 0, 0, 0.2);"></path> <path d="M9 12C9 12.8284 8.32843 13.5 7.5 13.5C6.67157 13.5 6 12.8284 6 12C6 11.1716 6.67157 10.5 7.5 10.5C8.32843 10.5 9 11.1716 9 12Z" fill="rgba(0, 0, 0, 0.2)" data-darkreader-inline-fill="" style="--darkreader-inline-fill: rgba(232, 230, 227, 0.2);"></path> <path d="M13.5 12C13.5 12.8284 12.8284 13.5 12 13.5C11.1716 13.5 10.5 12.8284 10.5 12C10.5 11.1716 11.1716 10.5 12 10.5C12.8284 10.5 13.5 11.1716 13.5 12Z" fill="rgba(0, 0, 0, 0.2)" data-darkreader-inline-fill="" style="--darkreader-inline-fill: rgba(232, 230, 227, 0.2);"></path> <path d="M18 12C18 12.8284 17.3284 13.5 16.5 13.5C15.6716 13.5 15 12.8284 15 12C15 11.1716 15.6716 10.5 16.5 10.5C17.3284 10.5 18 11.1716 18 12Z" fill="rgba(0, 0, 0, 0.2)" data-darkreader-inline-fill="" style="--darkreader-inline-fill: rgba(232, 230, 227, 0.2);"></path> </g></svg></a>
             </div>
         </div>
         {{end}}
@@ -110,5 +247,23 @@
         <p>No posts available.</p>
         {{end}}
     </div>
+    <script>
+        function toggleBar() {
+            var input = document.getElementById('bar-button'); 
+            var computedStyle = window.getComputedStyle(input);
+            if (computedStyle.left === '20px') {
+            input.style.left = '270px'; 
+            } else {
+            input.style.left = '20px';
+            }
+            input = document.getElementById('sidebar');
+            var computedStyleBar = window.getComputedStyle(input);
+            if (computedStyleBar.left === '-300px') {
+            input.style.left = '0'; // Move into view
+            } else {
+            input.style.left = '-300px'; // Move out of view
+            }
+            }
+    </script>
 </body>
 </html>

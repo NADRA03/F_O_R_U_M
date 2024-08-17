@@ -17,7 +17,7 @@ func main() {
     }
     defer db.Close()
 
-    http.HandleFunc("/", Forum.RootHandler)
+    http.HandleFunc("/", Forum.RootHandler(db))
     http.HandleFunc("/moderator", Forum.ModeratorHandler(db))
     http.HandleFunc("/login", Forum.LoginHandler(db))
     http.HandleFunc("/signup", Forum.SignupHandler(db))
@@ -26,8 +26,8 @@ func main() {
     http.HandleFunc("/like", Forum.LikeHandler(db))
     http.HandleFunc("/comment", Forum.CommentHandler(db))
     http.HandleFunc("/addpost",Forum.AddPostHandler(db))
-    http.HandleFunc("/profile", Forum.ProfileHandler(db))
     http.HandleFunc("/edit", Forum.EditProfileHandler(db))  
+    http.HandleFunc("/profile",Forum.ViewProfileHandler(db))
     fmt.Println("Server started at :8080")
     http.ListenAndServe(":8080", nil)
 }

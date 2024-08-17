@@ -3,148 +3,252 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{.Username}}'s Profile</title>
-    <link rel="stylesheet" href="/path/to/styles.css"> <!-- Include your CSS file -->
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* Reset some default browser styles */
-        /* body, h1, p {
+        @import url(https://fonts.googleapis.com/css?family=Righteous);
+
+        *, *:before, *:after {
             margin: 0;
             padding: 0;
-            font-family: Arial, sans-serif;
-        }
-
-        body {
-            background-color: #f4f4f4;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        .profile-container {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 400px;
             box-sizing: border-box;
-            text-align: center;
+            position: relative;
+        }
+        html, body {
+            height: 100%;
+        }
+        body {
+            background-color: rgb(34,34,34);
+        }
+        body:before {
+            content: '';
+            display: inline-block;
+            vertical-align: middle;
+            font-size: 0;
         }
 
         h1 {
-            font-size: 2rem;
-            color: #333;
-            margin-bottom: 20px;
+            margin-left: 35%;
+            display: inline-block;
+            color: white;
+            font-family: 'Righteous', serif;
+            font-size: 7em; 
+            text-shadow: .03em .03em 0 rgb(34,34,34);
+        }
+        h1:after {
+            content: attr(data-shadow);
+            position: absolute;
+            top: .06em; left: .06em;
+            z-index: -1;
+            text-shadow: none;
+            background-image:
+                linear-gradient(
+                45deg,
+                transparent 45%,
+                white 45%,
+                white 55%,
+                transparent 0
+                );
+            background-size: .05em .05em;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+
+            animation: shad-anim 15s linear infinite;
         }
 
+        @keyframes shad-anim {
+            0% {background-position: 0 0}
+            0% {background-position: 100% -100%}
+        }
+
+        .profile-username {
+            position: absolute;
+            font-family: 'Righteous', serif;
+            top: 30%;
+            left: 165px;
+            font-size: 2em;
+            color: #5b209a;
+        } 
         .profile-image {
-            width: 100px;
-            height: 100px;
+            width: 150px;
+            height: 150px;
             border-radius: 50%;
-            margin-bottom: 20px;
+            object-fit: cover;  
         }
 
-        .profile-info {
-            text-align: left;
-            margin-bottom: 20px;
+        .container {
+            font-family: "Raleway", sans-serif;
+            position: relative;
+            width: 80%;
+            font-size: 20px;
+            margin: 0 auto;
+            padding: 20px;
+            z-index: 1; 
         }
-
-        .profile-info p {
-            margin-bottom: 10px;
+        .post {
+            margin: 20px 0;
+            padding: 20px;
+            border-width: 2px;
+            border-radius: 20px;
+            background-color: rgba(0, 0, 0, 0.2);
+            color: rgb(255, 255, 255);
         }
-
-        button {
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
+        .post h2 {
+            font-family: 'Righteous', serif;
+            margin: 0 0 10px 100px;
+            font-size: 1.5em;
+            color: #5b209a;
+        }
+        .post .post-image {
+            position: absolute;
+            margin-top: 10px;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover; 
+        }
+        .post-media {
+            padding-top: 10px;
+            width: 50%;
+            height: 50%;
+        }
+        .post-video {
+            padding-top: 10px;  
+        }
+        .post p {
+            font-weight: lighter;
+            margin: 5px 0;
+            margin-left: 100px;
+            font-size: 1em;
+        }
+        .post .date {
+            font-size: 0.9em;
+            margin-left: 100px;
+            color: #6c757d;
+        }
+        .post .icons {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+            bottom: -10px;
+        }
+        .post .icons a {
+            text-decoration: none;
+            color: #007bff;
             cursor: pointer;
-        } */
+        }
+        .post .icons a:hover {
+            color: #0056b3;
+        }
 
-
-
-        /* styles.css */
-
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-}
-
-.profile-container {
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    max-width: 400px;
-    width: 100%;
-    text-align: center;
-}
-
-.profile-container h1 {
-    font-size: 24px;
-    color: #333;
-    margin-bottom: 20px;
-}
-
-.profile-image {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-bottom: 20px;
-    border: 2px solid #333;
-}
-
-.profile-info p {
-    font-size: 18px;
-    color: #555;
-    margin: 10px 0;
-}
-
-.profile-info strong {
-    color: #333;
-}
-
-.profile-info button {
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    padding: 10px 20px;
-    cursor: pointer;
-    font-size: 16px;
-    margin-top: 20px;
-}
-
-.profile-info button:hover {
-    background-color: #0056b3;
-}
-
+        a {
+            text-decoration: none;
+        }
+        .status-message {
+            margin: 20px 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .status-message.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .toggle-button {
+            display: inline-block;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 2;
+            background-color: transparent; 
+            border: none;
+            cursor: pointer;
+        }
+        .toggle-button svg {
+            width: 170px; 
+            height: 170px;
+            fill: #5b209a; 
+        }
+        form select {
+            width: 100%;
+            padding: 8px;
+            border-radius: 0%;
+            background-color: rgba(0, 0, 0, 0.2);
+            box-sizing: border-box;
+            outline: none;
+            border: none;
+            font-size: 20px;
+            box-shadow: none;
+            color: rgb(255, 255, 255); 
+        }
+        form select:focus {
+            outline: none;
+            box-shadow: none;
+        }
+        form select option {
+            background-color: rgba(0, 0, 0, 0.2); 
+            color: white; 
+            padding: 8px; /* Padding inside options */
+            border-radius: 0%;
+        }
+        .media-button {
+            position: absolute;
+            right: 10px;
+            top: 200px;
+        }
+        #media {
+            width: 70%;
+            color: white;
+            font-size: 20px;
+            background-color: rgba(0, 0, 0, 0.2);
+            box-sizing: border-box;
+            outline: none; /* Remove outline */
+            border: none;  /* Remove border */
+            resize: none;  /* Prevent resizing */
+            box-shadow: none;    
+        }
+        #mediaInput {
+            padding-top: 8px;
+        }
     </style>
 </head>
 <body>
-    <div class="profile-container">
-        <h1>{{.Username}}'s Profile</h1>
-        
-        {{if .Image}}
-        <img src="{{.Image}}" alt="Profile Image" class="profile-image">
+    <div class="container">
+        <h1 data-shadow='Buzzer'>Buzzer</h1>
+         
+        <div class="profile">
+        {{range $index, $post := .Posts}}
+        {{if eq $index 0}}
+            <img src="{{$post.Image}}" alt="Profile Image" class="profile-image" width="50" height="50">
+            <h2 class="profile-username">@{{$post.Username}}</h2>
         {{end}}
-        
-        <div class="profile-info">
-            <p><strong>Username:</strong> {{.Username}}</p>
-            <p><strong>Email:</strong> {{.Email}}</p>
-            <a href="/edit"><button>Go to edit Page</button></a>
-            
+        {{end}}
         </div>
+
+        {{if .Posts}}
+        {{range .Posts}}
+        <div class="post">
+            <img src="{{.Image}}" alt="Profile Image" class="post-image" width="50" height="50">
+            <a href="/profile?username={{.Username}}">
+                    <h2>@{{.Username}}</h2>
+            </a>
+            <p class="date">{{.Date}}</p>
+            <p>{{.Text}}</p>
+            {{if eq .MediaType "image"}}
+                <img src="{{.Media}}" alt="Post Media" class="post-media">
+            {{else if eq .MediaType "youtube"}}
+                <iframe width="560" height="315" src="{{.Media}}" class="post-video" frameborder="0" allowfullscreen></iframe>
+            {{else if eq .MediaType "link"}}
+                <a href="{{.Media}}" target="_blank">View Media</a>
+            {{end}}
+            <div class="icons">
+                <a href="/like?post_id={{.PostID}}"><svg viewBox="0 0 24 24" fill="none" width="50" height="50" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4 9.40652C3.44772 9.40652 3 9.85424 3 10.4065V18.4065C3 20.0634 4.34315 21.4065 6 21.4065H9V9.40652H4Z" fill="rgba(0, 0, 0, 0.2)" data-darkreader-inline-fill="" style="--darkreader-inline-fill: rgba(0, 0, 0, 0.2);"></path> <path d="M14.3059 4.16184C13.9067 2.9643 12.3868 2.60551 11.4942 3.4981L7.87868 7.11364C7.31607 7.67624 7 8.43931 7 9.23495V20.4065C7 20.9588 7.44772 21.4065 8 21.4065H15.6812C16.8813 21.4065 17.9659 20.6913 18.4386 19.5883L20.7574 14.1778C20.9175 13.8043 21 13.4023 21 12.996V12.4065C21 10.7497 19.6569 9.40653 18 9.40653H14.2808L14.4771 8.62115C14.8452 7.14867 14.7858 5.60175 14.3059 4.16184Z" fill="rgba(0, 0, 0, 0.2)" data-darkreader-inline-fill="" style="--darkreader-inline-fill: rgba(0, 0, 0, 0.2);"></path> </g></svg></a>
+                <a href="/comment?post_id={{.PostID}}"><svg viewBox="0 0 24 24" fill="none" width="50" height="50"  xmlns="http://www.w3.org/2000/svg" stroke="#a269e0" data-darkreader-inline-stroke="" style="--darkreader-inline-stroke: #a46ce1;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M5.20713 15.7929C4.95238 15.5382 4.58029 15.4401 4.23309 15.5363C3.88589 15.6325 3.61726 15.908 3.52988 16.2575L2.52988 20.2575C2.44468 20.5983 2.54453 20.9587 2.79291 21.2071C3.04129 21.4555 3.40178 21.5554 3.74256 21.4702L7.74256 20.4702C8.09207 20.3828 8.36757 20.1142 8.46374 19.767C8.5599 19.4198 8.46188 19.0477 8.20713 18.7929L5.20713 15.7929Z" fill="rgba(0, 0, 0, 0.2)" data-darkreader-inline-fill="" style="--darkreader-inline-fill: rgba(0, 0, 0, 0.2);"></path> <path d="M12 2.5C6.75329 2.5 2.5 6.75329 2.5 12C2.5 17.2467 6.75329 21.5 12 21.5C17.2467 21.5 21.5 17.2467 21.5 12C21.5 6.75329 17.2467 2.5 12 2.5Z" fill="rgba(0, 0, 0, 0.2)" data-darkreader-inline-fill="" style="--darkreader-inline-fill: rgba(0, 0, 0, 0.2);"></path> <path d="M9 12C9 12.8284 8.32843 13.5 7.5 13.5C6.67157 13.5 6 12.8284 6 12C6 11.1716 6.67157 10.5 7.5 10.5C8.32843 10.5 9 11.1716 9 12Z" fill="rgba(0, 0, 0, 0.2)" data-darkreader-inline-fill="" style="--darkreader-inline-fill: rgba(232, 230, 227, 0.2);"></path> <path d="M13.5 12C13.5 12.8284 12.8284 13.5 12 13.5C11.1716 13.5 10.5 12.8284 10.5 12C10.5 11.1716 11.1716 10.5 12 10.5C12.8284 10.5 13.5 11.1716 13.5 12Z" fill="rgba(0, 0, 0, 0.2)" data-darkreader-inline-fill="" style="--darkreader-inline-fill: rgba(232, 230, 227, 0.2);"></path> <path d="M18 12C18 12.8284 17.3284 13.5 16.5 13.5C15.6716 13.5 15 12.8284 15 12C15 11.1716 15.6716 10.5 16.5 10.5C17.3284 10.5 18 11.1716 18 12Z" fill="rgba(0, 0, 0, 0.2)" data-darkreader-inline-fill="" style="--darkreader-inline-fill: rgba(232, 230, 227, 0.2);"></path> </g></svg></a>
+            </div>
+        </div>
+        {{end}}
+        {{else}}
+        <p>No posts available.</p>
+        {{end}}
     </div>
 </body>
 </html>

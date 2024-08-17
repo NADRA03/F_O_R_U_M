@@ -2,10 +2,10 @@ package Forum
 
 import (
     "database/sql"
-    "net/http"
-	"html/template"
-	"strconv"
     "fmt"
+    "html/template"
+    "net/http"
+    "strconv"
 )
 
 func CommentHandler(db *sql.DB) http.HandlerFunc {
@@ -16,7 +16,9 @@ func CommentHandler(db *sql.DB) http.HandlerFunc {
             http.Redirect(w, r, "/", http.StatusSeeOther)
             return
         }
-
+        
+        image,_ := session.Values["profileImage"].(string)
+        username, _ := session.Values["username"].(string)
         userID, _ := session.Values["id"].(int)
         postIDStr := r.URL.Query().Get("post_id")
         postID, err := strconv.Atoi(postIDStr)
@@ -39,13 +41,21 @@ func CommentHandler(db *sql.DB) http.HandlerFunc {
         }
 
         var post struct {
-            PostID   int
-            Text     string
-            Media    string
-            Date     string
-            Category string
+            PostID      int
+            Text        string
+            Media       string
+            MediaType   string
+            Date        string
+            Category    string
+            Username    string
+            Image string
         }
-        err = db.QueryRow("SELECT post_id, text, media, date, category FROM post WHERE post_id = ?", postID).Scan(&post.PostID, &post.Text, &post.Media, &post.Date, &post.Category)
+        err = db.QueryRow(`
+            SELECT p.post_id, p.text, p.media, p.date, p.category, u.username, u.image
+            FROM post p
+            JOIN user u ON p.user_id = u.id
+            WHERE p.post_id = ?
+        `, postID).Scan(&post.PostID, &post.Text, &post.Media, &post.Date, &post.Category, &post.Username, &post.Image)
         if err != nil {
             if err == sql.ErrNoRows {
                 http.Error(w, "Post not found", http.StatusNotFound)
@@ -54,8 +64,19 @@ func CommentHandler(db *sql.DB) http.HandlerFunc {
             }
             return
         }
+        post.MediaType = parseMediaType(post.Media)
+        if post.MediaType == "youtube" {
+            post.Media = embedYouTube(post.Media)
+        }
 
-        rows, err := db.Query("SELECT comment_id, user_id, comment, date FROM comment WHERE post_id = ?", postID)
+
+        // Retrieve comments including commenter details
+        rows, err := db.Query(`
+            SELECT c.comment_id, c.user_id, c.comment, c.date, u.username, u.image
+            FROM comment c
+            JOIN user u ON c.user_id = u.id
+            WHERE c.post_id = ?
+        `, postID)
         if err != nil {
             http.Error(w, err.Error(), http.StatusInternalServerError)
             return
@@ -63,20 +84,24 @@ func CommentHandler(db *sql.DB) http.HandlerFunc {
         defer rows.Close()
 
         var comments []struct {
-            CommentID int
-            UserID    int
-            Comment   string
-            Date      string
+            CommentID    int
+            UserID       int
+            Comment      string
+            Date         string
+            Username     string
+            Image string
         }
 
         for rows.Next() {
             var comment struct {
-                CommentID int
-                UserID    int
-                Comment   string
-                Date      string
+                CommentID    int
+                UserID       int
+                Comment      string
+                Date         string
+                Username     string
+                Image        string
             }
-            err := rows.Scan(&comment.CommentID, &comment.UserID, &comment.Comment, &comment.Date)
+            err := rows.Scan(&comment.CommentID, &comment.UserID, &comment.Comment, &comment.Date, &comment.Username, &comment.Image)
             if err != nil {
                 http.Error(w, err.Error(), http.StatusInternalServerError)
                 return
@@ -90,27 +115,37 @@ func CommentHandler(db *sql.DB) http.HandlerFunc {
             http.Error(w, err.Error(), http.StatusInternalServerError)
             return
         }
-
+      
         statusMessage := r.URL.Query().Get("status")
         tmpl.Execute(w, struct {
             Post           struct {
-                PostID   int
-                Text     string
-                Media    string
-                Date     string
-                Category string
+                PostID      int
+                Text        string
+                Media       string
+                MediaType   string
+                Date        string
+                Category    string
+                Username    string
+                Image       string
             }
             Comments       []struct {
-                CommentID int
-                UserID    int
-                Comment   string
-                Date      string
+                CommentID    int
+                UserID       int
+                Comment      string
+                Date         string
+                Username     string
+                Image        string
             }
             StatusMessage string
-        }{
+            Image         string
+            Username      string
+        }{  
+            Username:       username,
+            Image:          image,
             Post:           post,
             Comments:       comments,
             StatusMessage:  statusMessage,
         })
     }
 }
+
