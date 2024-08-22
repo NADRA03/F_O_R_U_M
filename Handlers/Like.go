@@ -26,8 +26,7 @@ func LikeHandler(db *sql.DB) http.HandlerFunc {
         }
 
         if existingLikeCount > 0 {
-            // User has already liked this post
-            http.Redirect(w, r, "/myposts", http.StatusSeeOther)
+            w.WriteHeader(http.StatusOK)
             return
         }
         _, err = db.Exec("INSERT INTO `like` (user_id, post_id) VALUES (?, ?)", userID, postID)
@@ -36,7 +35,6 @@ func LikeHandler(db *sql.DB) http.HandlerFunc {
             RenderErrorPage(w, http.StatusInternalServerError) 
             return
         }
-        
-        http.Redirect(w, r, "/myposts?StatusLike=success", http.StatusSeeOther)
+        w.WriteHeader(http.StatusOK)
     }
 }

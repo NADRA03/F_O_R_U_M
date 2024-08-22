@@ -22,7 +22,21 @@ func MyPostsHandler(db *sql.DB) http.HandlerFunc {
 
 		// Get the user ID from the session
 		userID, _ := session.Values["id"].(int)
-        
+		var followerCount int
+        err := db.QueryRow("SELECT COUNT(*) FROM followers WHERE user_id = ?", userID).Scan(&followerCount)
+        if err != nil {
+            http.Error(w, err.Error(), http.StatusInternalServerError)
+            RenderErrorPage(w, http.StatusInternalServerError)
+            return
+        }
+
+		var followingCount int
+        err = db.QueryRow("SELECT COUNT(*) FROM followers WHERE follower_id = ?", userID).Scan(&followingCount)
+        if err != nil {
+            http.Error(w, err.Error(), http.StatusInternalServerError)
+            RenderErrorPage(w, http.StatusInternalServerError)
+            return
+        }
 		// Handle POST request: inserting a new post into the database
 		if r.Method == http.MethodPost {
 			text := r.FormValue("text")
@@ -120,7 +134,11 @@ func MyPostsHandler(db *sql.DB) http.HandlerFunc {
 				Image     string
 			}
 			StatusMessage string
-		}{
+			Followings    int
+			Followers     int
+		}{   
+			Followings: followingCount,
+			Followers: followerCount,
 			Posts:         posts,
 			StatusMessage: statusMessage,
 		})
