@@ -8,55 +8,61 @@ import (
 
 )
 
-var defaultProfileImage = "https://www.strasys.uk/wp-content/uploads/2022/02/Depositphotos_484354208_S.jpg" 
-var defaultName = "anonymous"
-
-func RootHandler(db *sql.DB) http.HandlerFunc {
+func ForyouHandler(db *sql.DB) http.HandlerFunc {
     return func(w http.ResponseWriter, r *http.Request) {
 
 
     //err
-        if r.URL.Path != "/" {
-            RenderErrorPage(w, http.StatusNotFound)
-            return
-        }
+            if r.URL.Path != "/foryou" {
+                RenderErrorPage(w, http.StatusNotFound)
+                return
+    }
 
 
 
     session, _ := store.Get(r, "mysession")
+	if auth, ok := session.Values["authenticated"].(bool); !ok || !auth {
+		http.Redirect(w, r, "/login", http.StatusSeeOther)
+		return
+	}
     name, ok := session.Values["username"].(string)
     if !ok || name == "" {
         name = defaultName
     }
 
-
     profileImage, ok := session.Values["profileImage"].(string)
-    
+
     if !ok || profileImage == "" {
         profileImage = defaultProfileImage 
     }
     
+	userID,_ := session.Values["id"].(int)
     category := r.URL.Query().Get("category")
 
-    query := `
-        SELECT p.post_id, p.text, p.media, p.date, p.category, u.username, u.image
-        FROM post p
-        JOIN user u ON p.user_id = u.id
+	query := `
+	SELECT p.post_id, p.text, p.media, p.date, p.category, u.username, u.image
+	FROM post p
+	JOIN user u ON p.user_id = u.id
+	WHERE p.user_id IN (
+		SELECT f.user_id
+		FROM followers f
+		WHERE f.follower_id = ?
+	)
     `
-    if category != "" {
-        query += `WHERE p.category = ? `
-    }
-    query += `ORDER BY p.date DESC`
+	if category != "" {
+	query += ` AND p.category = ? `
+	}
+	query += `ORDER BY p.date DESC`
 
-    var rows *sql.Rows
-    var err error
-    if category != "" {
-        rows, err = db.Query(query, category)
-    } else {
-        rows, err = db.Query(query)
-    }
+	var rows *sql.Rows
+	var err error
+	if category != "" {
+		rows, err = db.Query(query, userID, category)
+	} else {
+		rows, err = db.Query(query, userID)
+	}
     if err != nil {
-    RenderErrorPage(w, http.StatusInternalServerError)
+    http.Error(w, err.Error(), http.StatusInternalServerError)
     return
     }
     defer rows.Close()
@@ -93,7 +99,7 @@ func RootHandler(db *sql.DB) http.HandlerFunc {
         }
         posts = append(posts, post)
     }
-    tmpl, err := template.ParseFiles("HTML/Home.html")
+    tmpl, err := template.ParseFiles("HTML/foryou.html")
     if err != nil {
         RenderErrorPage(w, http.StatusInternalServerError) 
         return
@@ -123,5 +129,3 @@ func RootHandler(db *sql.DB) http.HandlerFunc {
     })
 }
 }
-
-

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&family=Noto+Sans+TC:wght@100..900&family=Raleway:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
         @import url(https://fonts.googleapis.com/css?family=Righteous);
 
         *, *:before, *:after {
@@ -76,7 +77,7 @@
         }
 
         .container {
-            font-family: "Raleway", sans-serif;
+            font-family: sans-serif;
             position: relative;
             width: 70%;
             font-size: 20px;
@@ -118,7 +119,7 @@
             font-weight: lighter;
             margin: 5px 0;
             margin-left: 100px;
-            font-size: 1em;
+            font-size: 1.3em;
         }
         .post .date {
             font-size: 0.9em;
@@ -300,6 +301,40 @@
         margin-top: 30px;
         text-align: center;
         }
+        .follow {
+            font-family: sans-serif;
+            display: flex;
+            flex-direction: row;
+            padding-right: 30px;
+            position: absolute;
+
+        }
+        .follow .count {
+            display: flex;
+            flex-direction: row;
+            padding-right: 100px;  
+            color: rgb(255, 255, 255,1);
+            font-size: 1.0em;
+            bottom: 40px;
+            left: 165px;
+        }
+        .follow .count svg {
+            width: 40px;
+            height: 40px;
+        }
+
+        .follow-btn svg{
+        width: 60px;
+        height: 60px;
+        }
+        .follow-btn {
+            background-color: transparent;
+            border: none;
+            left: 150px;
+            padding-bottom: 6px;
+            bottom: 70px;
+
+        }
     </style>
 
 </head>
@@ -309,10 +344,11 @@
         <p class="greeting">@{{.Name}}</p>
         <ul>
             <li><a href="/">home</a></li>
+            <li><a href="/foryou">foryou</a></li>    
             <li><a href="/settings">settings</a></li>
             <li></i><a href="/myposts">posts</a></li>
             <li></i><a href="/mylikes">likes</a></li>
-            <li><a href="/moderator">Moderation</a></li>      
+            <li><a href="/moderator">moderation</a></li>       
         </ul>
         <div class="login-button">
             <i class="fa-solid fa-arrow-right-from-bracket"></i><a href="/login">Logout</a>
@@ -323,12 +359,17 @@
         <h1 data-shadow='Buzzer'>Buzzer</h1>
         <button class="bar-button" id="bar-button" onclick="toggleBar()"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="rgba(162, 105, 224,0.7)" data-darkreader-inline-stroke="" style="--darkreader-inline-stroke: rgba(164, 108, 225, 0.7);"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M7 12C7 13.1046 6.10457 14 5 14C3.89543 14 3 13.1046 3 12C3 10.8954 3.89543 10 5 10C6.10457 10 7 10.8954 7 12Z" fill="rgba(162, 105, 224,0.7)" data-darkreader-inline-fill="" style="--darkreader-inline-fill: rgba(78, 27, 132, 0.7);"></path> <path d="M21 12C21 13.1046 20.1046 14 19 14C17.8954 14 17 13.1046 17 12C17 10.8954 17.8954 10 19 10C20.1046 10 21 10.8954 21 12Z" fill="rgba(162, 105, 224,0.7)" data-darkreader-inline-fill="" style="--darkreader-inline-fill: rgba(78, 27, 132, 0.7);"></path> <path opacity="0.5" d="M14 12C14 13.1046 13.1046 14 12 14C10.8954 14 10 13.1046 10 12C10 10.8954 10.8954 10 12 10C13.1046 10 14 10.8954 14 12Z" fill="rgba(162, 105, 224,0.7)" data-darkreader-inline-fill="" style="--darkreader-inline-fill: rgba(78, 27, 132, 0.7);"></path> </g></svg></button>
         <div class="profile">
-        {{range $index, $post := .Posts}}
-        {{if eq $index 0}}
-            <img src="{{$post.Image}}" alt="Profile Image" class="profile-image" width="50" height="50">
-            <h2 class="profile-username">@{{$post.Username}}</h2>
+            <img src="{{.ProfileOwnerImage}}" alt="Profile Image" class="profile-image" width="50" height="50">
+            <h2 class="profile-username">@{{.Username}}</h2>
+        <div class="follow"> 
+            <div class="count">{{.Followers}} <p>&nbsp;&nbsp;followers</p></div>
+            <div class="count">{{.Followings}} <p>&nbsp;&nbsp;followings</p></div>
+            {{range $index, $post := .Posts}}
+            {{if eq $index 0}}
+                <button onclick="followUser('{{$post.User_id}}')" class="follow-btn"><svg fill="#5b209a" height="200px" width="200px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 368.373 368.373" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="XMLID_91_"> <path id="XMLID_92_" d="M293.373,226.936h-15v-15c0-8.284-6.716-15-15-15c-8.284,0-15,6.716-15,15v15h-15c-8.284,0-15,6.716-15,15 c0,8.284,6.716,15,15,15h15v15c0,8.284,6.716,15,15,15c8.284,0,15-6.716,15-15v-15h15c8.284,0,15-6.716,15-15 C308.373,233.652,301.657,226.936,293.373,226.936z"></path> <path id="XMLID_93_" d="M263.373,136.936c-34.485,0-65.14,16.713-84.293,42.463c-7.653-1.61-15.582-2.463-23.707-2.463 c-8.643,0-17.064,0.965-25.165,2.781c-38.121,8.543-69.149,36.066-82.606,72.092c-4.669,12.5-7.229,26.02-7.229,40.127 c0,8.284,6.716,15,15,15h125.596c19.246,24.348,49.03,40,82.404,40c57.898,0,105-47.102,105-105S321.271,136.936,263.373,136.936z M263.373,316.936c-13.592,0-26.339-3.652-37.344-10c-22.48-12.967-37.656-37.236-37.656-65c0-20.01,7.892-38.199,20.708-51.662 c13.67-14.359,32.946-23.338,54.292-23.338c41.355,0,75,33.645,75,75S304.728,316.936,263.373,316.936z"></path> <path id="XMLID_104_" d="M32.622,84.187c0,23.666,18.367,43.109,41.594,44.857c-7.382-13.302-11.594-28.596-11.594-44.857 s4.212-31.556,11.594-44.857C50.989,41.077,32.622,60.521,32.622,84.187z"></path> <path id="XMLID_105_" d="M93.489,160.825c-5.17-1.077-10.482-1.639-15.867-1.639C34.821,159.186,0,194.008,0,236.809 c0,8.284,6.716,15,15,15h1.025C27.627,211.581,56.218,178.487,93.489,160.825z"></path> <path id="XMLID_106_" d="M104.216,47.915c-7.289,10.25-11.594,22.764-11.594,36.271s4.305,26.021,11.594,36.271 c11.383,16.006,30.065,26.478,51.157,26.478c34.601,0,62.75-28.149,62.75-62.75s-28.149-62.75-62.75-62.75 C134.28,21.437,115.599,31.909,104.216,47.915z"></path> </g> </g></svg></button>
+            {{end}}
         {{end}}
-        {{end}}
+        </div>
         </div>
 
         {{if .Posts}}
@@ -348,7 +389,7 @@
                 <a href="{{.Media}}" target="_blank">View Media</a>
             {{end}}
             <div class="icons">
-                <a href="javascript:void(0);" onclick="sendLike('{{.PostID}}')"><svg viewBox="0 0 24 24" fill="none" width="50" height="50" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4 9.40652C3.44772 9.40652 3 9.85424 3 10.4065V18.4065C3 20.0634 4.34315 21.4065 6 21.4065H9V9.40652H4Z" fill="rgba(0, 0, 0, 0.2)" data-darkreader-inline-fill="" style="--darkreader-inline-fill: rgba(0, 0, 0, 0.2);"></path> <path d="M14.3059 4.16184C13.9067 2.9643 12.3868 2.60551 11.4942 3.4981L7.87868 7.11364C7.31607 7.67624 7 8.43931 7 9.23495V20.4065C7 20.9588 7.44772 21.4065 8 21.4065H15.6812C16.8813 21.4065 17.9659 20.6913 18.4386 19.5883L20.7574 14.1778C20.9175 13.8043 21 13.4023 21 12.996V12.4065C21 10.7497 19.6569 9.40653 18 9.40653H14.2808L14.4771 8.62115C14.8452 7.14867 14.7858 5.60175 14.3059 4.16184Z" fill="rgba(0, 0, 0, 0.2)" data-darkreader-inline-fill="" style="--darkreader-inline-fill: rgba(0, 0, 0, 0.2);"></path> </g></svg></a>
+                <a href="javascript:void(0);" id="like_btm" onclick="sendLike('{{.PostID}}')"><svg viewBox="0 0 24 24" fill="none" width="50" height="50" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4 9.40652C3.44772 9.40652 3 9.85424 3 10.4065V18.4065C3 20.0634 4.34315 21.4065 6 21.4065H9V9.40652H4Z" fill="rgba(0, 0, 0, 0.2)" data-darkreader-inline-fill="" style="--darkreader-inline-fill: rgba(0, 0, 0, 0.2);"></path> <path d="M14.3059 4.16184C13.9067 2.9643 12.3868 2.60551 11.4942 3.4981L7.87868 7.11364C7.31607 7.67624 7 8.43931 7 9.23495V20.4065C7 20.9588 7.44772 21.4065 8 21.4065H15.6812C16.8813 21.4065 17.9659 20.6913 18.4386 19.5883L20.7574 14.1778C20.9175 13.8043 21 13.4023 21 12.996V12.4065C21 10.7497 19.6569 9.40653 18 9.40653H14.2808L14.4771 8.62115C14.8452 7.14867 14.7858 5.60175 14.3059 4.16184Z" fill="rgba(0, 0, 0, 0.2)" data-darkreader-inline-fill="" style="--darkreader-inline-fill: rgba(0, 0, 0, 0.2);"></path> </g></svg></a>
                 <a href="/comment?post_id={{.PostID}}"><svg viewBox="0 0 24 24" fill="none" width="50" height="50"  xmlns="http://www.w3.org/2000/svg" stroke="#a269e0" data-darkreader-inline-stroke="" style="--darkreader-inline-stroke: #a46ce1;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M5.20713 15.7929C4.95238 15.5382 4.58029 15.4401 4.23309 15.5363C3.88589 15.6325 3.61726 15.908 3.52988 16.2575L2.52988 20.2575C2.44468 20.5983 2.54453 20.9587 2.79291 21.2071C3.04129 21.4555 3.40178 21.5554 3.74256 21.4702L7.74256 20.4702C8.09207 20.3828 8.36757 20.1142 8.46374 19.767C8.5599 19.4198 8.46188 19.0477 8.20713 18.7929L5.20713 15.7929Z" fill="rgba(0, 0, 0, 0.2)" data-darkreader-inline-fill="" style="--darkreader-inline-fill: rgba(0, 0, 0, 0.2);"></path> <path d="M12 2.5C6.75329 2.5 2.5 6.75329 2.5 12C2.5 17.2467 6.75329 21.5 12 21.5C17.2467 21.5 21.5 17.2467 21.5 12C21.5 6.75329 17.2467 2.5 12 2.5Z" fill="rgba(0, 0, 0, 0.2)" data-darkreader-inline-fill="" style="--darkreader-inline-fill: rgba(0, 0, 0, 0.2);"></path> <path d="M9 12C9 12.8284 8.32843 13.5 7.5 13.5C6.67157 13.5 6 12.8284 6 12C6 11.1716 6.67157 10.5 7.5 10.5C8.32843 10.5 9 11.1716 9 12Z" fill="rgba(0, 0, 0, 0.2)" data-darkreader-inline-fill="" style="--darkreader-inline-fill: rgba(232, 230, 227, 0.2);"></path> <path d="M13.5 12C13.5 12.8284 12.8284 13.5 12 13.5C11.1716 13.5 10.5 12.8284 10.5 12C10.5 11.1716 11.1716 10.5 12 10.5C12.8284 10.5 13.5 11.1716 13.5 12Z" fill="rgba(0, 0, 0, 0.2)" data-darkreader-inline-fill="" style="--darkreader-inline-fill: rgba(232, 230, 227, 0.2);"></path> <path d="M18 12C18 12.8284 17.3284 13.5 16.5 13.5C15.6716 13.5 15 12.8284 15 12C15 11.1716 15.6716 10.5 16.5 10.5C17.3284 10.5 18 11.1716 18 12Z" fill="rgba(0, 0, 0, 0.2)" data-darkreader-inline-fill="" style="--darkreader-inline-fill: rgba(232, 230, 227, 0.2);"></path> </g></svg></a>
             </div>
         </div>
@@ -360,7 +401,7 @@
 
     <script>
         function toggleBar() {
-
+           
             var input = document.getElementById('bar-button'); 
             var computedStyle = window.getComputedStyle(input);
             if (computedStyle.left === '20px') {
@@ -382,15 +423,21 @@
         xhr.open("GET", "/like?post_id=" + postID, true); // Send the request to your Go server
         xhr.onload = function() {
         if (xhr.status === 200) {
+            if (xhr.responseText === "Like added") {
+                alert("Your like was added!");
+            } else if (xhr.responseText === "Like removed") {
+                alert("Your like was removed!");
+            } 
         localStorage.setItem('scrollPosition', scrollPosition);
-        location.reload(); // Refresh the current page after liking
+        location.reload(); 
+        } else if (xhr.status === 400) {  
+            alert("Login first.");
         } else {
-        alert("Error liking the post.");
+            alert("Error liking the post.");
         }
         };
         xhr.send();
         }
-
         window.onbeforeunload = function() {
         localStorage.setItem("scrollPosition", window.scrollY);
         };
@@ -401,6 +448,58 @@
             window.scrollTo(0, parseInt(scrollPosition));
         }
         };
+
+        function followUser(userID) {
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "/follow?user_id=" + userID, true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+        xhr.onload = function() {
+        if (xhr.status === 200) {
+            if (xhr.responseText === "Follow added") {
+                alert("You are now following this user!");
+            } else if (xhr.responseText === "Follow removed") {
+                alert("You have unfollowed this user!");
+            } 
+            location.reload();  
+        } else if (xhr.status === 409) {  
+            alert("You are already following this user.");
+        } else if (xhr.status === 400) {  
+            alert("Login first.");
+        } else {
+            alert("Error following the user.");
+        }
+        };
+        xhr.send();
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+        const defaultImageURL = 'https://www.strasys.uk/wp-content/uploads/2022/02/Depositphotos_484354208_S.jpg';
+
+        // Function to handle images
+        function handleImages(selector) {
+        const images = document.querySelectorAll(selector);
+        images.forEach(img => {
+            // Set default image on error
+            img.addEventListener('error', function() {
+                img.src = defaultImageURL;
+            });
+
+            // Set default image if src is empty or not set
+            if (!img.src || img.src.trim() === '') {
+                img.src = defaultImageURL;
+            }
+        });
+        }
+
+        // Handle all images
+        handleImages('img');
+
+        // Handle images with a specific class
+        handleImages('img.post-image');
+        });
+        
     </script>
+
 </body>
 </html>

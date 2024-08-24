@@ -7,7 +7,7 @@ import (
 )
 
 func RenderErrorPage(w http.ResponseWriter, statusCode int) {
-	errorPage := fmt.Sprintf("pages/%d.html", statusCode)
+	errorPage := fmt.Sprintf("HTML/%d.html", statusCode)
 	tmpl, err := template.ParseFiles(errorPage)
 	if err != nil {
 		http.Error(w, "Error loading error template", http.StatusInternalServerError)

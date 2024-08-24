@@ -1,25 +1,84 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
-     <title>404</title>
-     <style>
-        h1{
-            display: flex;
-        align-items: center;
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404</title>
+    <style>
+    @import url(https://fonts.googleapis.com/css?family=Righteous);
+    *, *:before, *:after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        position: relative;
+        }
+        html, body {
+        display: flex;
         justify-content: center;
-    }
-        h3 {
-            display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    body {
-        background-color: rgb(99, 99, 99);
-    }
-     </style>
+        align-items: center;    
+        height: 100%;
+        }
+        body {
+        background-color: rgb(34,34,34);
+        }
+        body:before {
+        content: '';
+        display: inline-block;
+        vertical-align: middle;
+        font-size: 0;
+        }
+
+
+
+
+        h1 {
+        margin-left: 400px;
+        color: rgba(255, 255, 255, 0.7);
+        width: 900px;
+        bottom: 270px;
+        font-family: 'Righteous', serif;
+        font-size: 7em; 
+        text-shadow: .03em .03em 0 rgb(34,34,34);
+        }
+        h1:after {
+        content: attr(data-shadow);
+        position: absolute;
+        top: .06em; left: .06em;
+        z-index: -1;
+        text-shadow: none;
+        background-image:
+            linear-gradient(
+            45deg,
+            transparent 45%,
+            white 45%,
+            white 55%,
+            transparent 0
+            );
+        background-size: .05em .05em;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+
+        animation: shad-anim 15s linear infinite;
+        }
+        h1[data-size='4em']:after {
+        animation: shad-anim 40s linear infinite;
+        background-size: 0.08em 0.08em;
+        background-image:
+            linear-gradient(
+            45deg,
+            transparent 45%,
+            rgb(91, 32, 154,1) 45%,
+            rgb(91, 32, 154,1) 55%,
+            transparent 0
+            );
+        }
+        @keyframes shad-anim {
+        0% {background-position: 0 0}
+        0% {background-position: 100% -100%}
+        }
+    </style>
 </head>
 <body>
-    <h1>Error 404</h1>
-    
-    <h3>Requested Page Not Found</h3>
-    </body>
+    <h1 data-shadow='Error 404'>Error 404</h1>
+</body>
 </html>

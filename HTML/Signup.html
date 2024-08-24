@@ -146,7 +146,7 @@
     <h1 data-shadow='Buzzer'>Buzzer</h1>
     <div class="container">
         <h2>Sign Up</h2>
-        <form method="post" action="/signup">
+        <form method="post" id="signupForm" action="/signup">
             <div class="form-group">
                 <label for="username">Username</label>
                 <input type="text" id="username" name="username" required>
@@ -168,5 +168,13 @@
             </div>
         </form>
     </div>
+<script>
+        window.onload = function() {
+            var errorMessage = "{{.ErrorMessage}}";
+            if (errorMessage) {
+                alert(errorMessage);
+            }
+        };
+</script>
 </body>
 </html>

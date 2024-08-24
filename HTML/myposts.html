@@ -132,7 +132,7 @@
         font-weight: lighter;
         margin: 5px 0;
         margin-left: 100px;
-        font-size: 1em;
+        font-size: 1.3em;
         }
         .post .date {
         font-size: 0.9em;
@@ -376,15 +376,14 @@
 
         }
         .follow .count {
-            font-family: 'Righteous', serif;
             display: flex;
             flex-direction: row;
             padding-right: 100px;  
             font-weight: 300px;
-            color: rgba(164, 108, 225, 0.7);
-            font-size: 1.5em;
+            color: rgb(255, 255, 255,1);
+            font-size: 1.0em;
             bottom: 40px;
-            left: 160px;
+            left: 165px;
         }
 
         .follow .count svg {
@@ -396,43 +395,31 @@
 </head>
 <body>
     <div class="sidebar" id="sidebar">
-        {{range $index, $post := .Posts}}
-        {{if eq $index 0}}
         <img src="{{.Image}}" alt="Profile Picture">
         <p class="greeting">@{{.Username}}</p>
-        {{end}}
-        {{end}}
         <ul>
             <li><a href="/">home</a></li>
+            <li><a href="/foryou">foryou</a></li>    
             <li><a href="/settings">settings</a></li>
             <li></i><a href="/myposts">posts</a></li>
             <li></i><a href="/mylikes">likes</a></li>
-            <li><a href="/moderator">Moderation</a></li>      
+            <li><a href="/moderator">moderation</a></li>    
         </ul>
         <div class="login-button">
             <i class="fa-solid fa-arrow-right-from-bracket"></i><a href="/login?logout=true">Logout</a>
         </div>
     </div>
     <div class="container">
-        {{if .StatusMessage}}
-        <div class="status-message success">
-            {{if eq .StatusMessage "success"}}Post added successfully!{{end}}
-        </div>
-        {{end}}
         <h1 data-shadow='Buzzer'>Buzzer</h1>
         <button class="bar-button" id="bar-button" onclick="toggleBar()"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="rgba(162, 105, 224,0.7)" data-darkreader-inline-stroke="" style="--darkreader-inline-stroke: rgba(164, 108, 225, 0.7);"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M7 12C7 13.1046 6.10457 14 5 14C3.89543 14 3 13.1046 3 12C3 10.8954 3.89543 10 5 10C6.10457 10 7 10.8954 7 12Z" fill="rgba(162, 105, 224,0.7)" data-darkreader-inline-fill="" style="--darkreader-inline-fill: rgba(78, 27, 132, 0.7);"></path> <path d="M21 12C21 13.1046 20.1046 14 19 14C17.8954 14 17 13.1046 17 12C17 10.8954 17.8954 10 19 10C20.1046 10 21 10.8954 21 12Z" fill="rgba(162, 105, 224,0.7)" data-darkreader-inline-fill="" style="--darkreader-inline-fill: rgba(78, 27, 132, 0.7);"></path> <path opacity="0.5" d="M14 12C14 13.1046 13.1046 14 12 14C10.8954 14 10 13.1046 10 12C10 10.8954 10.8954 10 12 10C13.1046 10 14 10.8954 14 12Z" fill="rgba(162, 105, 224,0.7)" data-darkreader-inline-fill="" style="--darkreader-inline-fill: rgba(78, 27, 132, 0.7);"></path> </g></svg></button>
          
         <div class="profile">
-        {{range $index, $post := .Posts}}
-        {{if eq $index 0}}
-            <img src="{{$post.Image}}" alt="Profile Image" class="profile-image" width="50" height="50">
-            <h2 class="profile-username">@{{$post.Username}}</h2>
-        {{end}}
-        {{end}}
-        <!-- <div class="follow"> -->
-        <!-- <div class="count">{{.Followers}}&nbsp;<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="rgba(164, 108, 225, 0.7)" data-darkreader-inline-fill="" style="--darkreader-inline-fill: rgba(76, 27, 131, 0.7);"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g> <path fill="none" d="M0 0h24v24H0z"></path> <path d="M14 14.252v2.09A6 6 0 0 0 6 22l-2-.001a8 8 0 0 1 10-7.748zM12 13c-3.315 0-6-2.685-6-6s2.685-6 6-6 6 2.685 6 6-2.685 6-6 6zm0-2c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm5.793 8.914l3.535-3.535 1.415 1.414-4.95 4.95-3.536-3.536 1.415-1.414 2.12 2.121z"></path> </g> </g></svg></div> -->
-        <!-- <div class="count">{{.Followings}} <p>&nbsp;&nbsp;followings</p></div> -->
-        <!-- </div> -->
+            <img src="{{.Image}}" alt="Profile Image" class="profile-image" width="50" height="50">
+            <h2 class="profile-username">@{{.Username}}</h2>
+        <div class="follow"> 
+        <div class="count">{{.Followers}} <p>&nbsp;&nbsp;followers</p></div>
+        <div class="count">{{.Followings}} <p>&nbsp;&nbsp;followings</p></div>
+        </div>
         </div>
          
         {{if .Posts}}
@@ -452,7 +439,7 @@
                 <a href="{{.Media}}" target="_blank">View Media</a>
             {{end}}
             <div class="icons">
-                <a href="javascript:void(0);" onclick="sendLike('{{.PostID}}')"><svg viewBox="0 0 24 24" fill="none" width="50" height="50" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4 9.40652C3.44772 9.40652 3 9.85424 3 10.4065V18.4065C3 20.0634 4.34315 21.4065 6 21.4065H9V9.40652H4Z" fill="rgba(0, 0, 0, 0.2)" data-darkreader-inline-fill="" style="--darkreader-inline-fill: rgba(0, 0, 0, 0.2);"></path> <path d="M14.3059 4.16184C13.9067 2.9643 12.3868 2.60551 11.4942 3.4981L7.87868 7.11364C7.31607 7.67624 7 8.43931 7 9.23495V20.4065C7 20.9588 7.44772 21.4065 8 21.4065H15.6812C16.8813 21.4065 17.9659 20.6913 18.4386 19.5883L20.7574 14.1778C20.9175 13.8043 21 13.4023 21 12.996V12.4065C21 10.7497 19.6569 9.40653 18 9.40653H14.2808L14.4771 8.62115C14.8452 7.14867 14.7858 5.60175 14.3059 4.16184Z" fill="rgba(0, 0, 0, 0.2)" data-darkreader-inline-fill="" style="--darkreader-inline-fill: rgba(0, 0, 0, 0.2);"></path> </g></svg></a>
+                <a href="javascript:void(0);" id="like_btm" onclick="sendLike('{{.PostID}}')"><svg viewBox="0 0 24 24" fill="none" width="50" height="50" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4 9.40652C3.44772 9.40652 3 9.85424 3 10.4065V18.4065C3 20.0634 4.34315 21.4065 6 21.4065H9V9.40652H4Z" fill="rgba(0, 0, 0, 0.2)" data-darkreader-inline-fill="" style="--darkreader-inline-fill: rgba(0, 0, 0, 0.2);"></path> <path d="M14.3059 4.16184C13.9067 2.9643 12.3868 2.60551 11.4942 3.4981L7.87868 7.11364C7.31607 7.67624 7 8.43931 7 9.23495V20.4065C7 20.9588 7.44772 21.4065 8 21.4065H15.6812C16.8813 21.4065 17.9659 20.6913 18.4386 19.5883L20.7574 14.1778C20.9175 13.8043 21 13.4023 21 12.996V12.4065C21 10.7497 19.6569 9.40653 18 9.40653H14.2808L14.4771 8.62115C14.8452 7.14867 14.7858 5.60175 14.3059 4.16184Z" fill="rgba(0, 0, 0, 0.2)" data-darkreader-inline-fill="" style="--darkreader-inline-fill: rgba(0, 0, 0, 0.2);"></path> </g></svg></a>
                 <a href="/comment?post_id={{.PostID}}"><svg viewBox="0 0 24 24" fill="none" width="50" height="50"  xmlns="http://www.w3.org/2000/svg" stroke="#a269e0" data-darkreader-inline-stroke="" style="--darkreader-inline-stroke: #a46ce1;"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M5.20713 15.7929C4.95238 15.5382 4.58029 15.4401 4.23309 15.5363C3.88589 15.6325 3.61726 15.908 3.52988 16.2575L2.52988 20.2575C2.44468 20.5983 2.54453 20.9587 2.79291 21.2071C3.04129 21.4555 3.40178 21.5554 3.74256 21.4702L7.74256 20.4702C8.09207 20.3828 8.36757 20.1142 8.46374 19.767C8.5599 19.4198 8.46188 19.0477 8.20713 18.7929L5.20713 15.7929Z" fill="rgba(0, 0, 0, 0.2)" data-darkreader-inline-fill="" style="--darkreader-inline-fill: rgba(0, 0, 0, 0.2);"></path> <path d="M12 2.5C6.75329 2.5 2.5 6.75329 2.5 12C2.5 17.2467 6.75329 21.5 12 21.5C17.2467 21.5 21.5 17.2467 21.5 12C21.5 6.75329 17.2467 2.5 12 2.5Z" fill="rgba(0, 0, 0, 0.2)" data-darkreader-inline-fill="" style="--darkreader-inline-fill: rgba(0, 0, 0, 0.2);"></path> <path d="M9 12C9 12.8284 8.32843 13.5 7.5 13.5C6.67157 13.5 6 12.8284 6 12C6 11.1716 6.67157 10.5 7.5 10.5C8.32843 10.5 9 11.1716 9 12Z" fill="rgba(0, 0, 0, 0.2)" data-darkreader-inline-fill="" style="--darkreader-inline-fill: rgba(232, 230, 227, 0.2);"></path> <path d="M13.5 12C13.5 12.8284 12.8284 13.5 12 13.5C11.1716 13.5 10.5 12.8284 10.5 12C10.5 11.1716 11.1716 10.5 12 10.5C12.8284 10.5 13.5 11.1716 13.5 12Z" fill="rgba(0, 0, 0, 0.2)" data-darkreader-inline-fill="" style="--darkreader-inline-fill: rgba(232, 230, 227, 0.2);"></path> <path d="M18 12C18 12.8284 17.3284 13.5 16.5 13.5C15.6716 13.5 15 12.8284 15 12C15 11.1716 15.6716 10.5 16.5 10.5C17.3284 10.5 18 11.1716 18 12Z" fill="rgba(0, 0, 0, 0.2)" data-darkreader-inline-fill="" style="--darkreader-inline-fill: rgba(232, 230, 227, 0.2);"></path> </g></svg></a>
             </div>
         </div>
@@ -503,6 +490,7 @@
         }
 
         function toggleMediaInput() {
+        event.preventDefault();
         var mediaInput = document.getElementById('mediaInput');
         if (mediaInput.style.display === 'none' || mediaInput.style.display === "") {
             mediaInput.style.display = 'block';
@@ -533,15 +521,21 @@
         xhr.open("GET", "/like?post_id=" + postID, true); // Send the request to your Go server
         xhr.onload = function() {
         if (xhr.status === 200) {
+            if (xhr.responseText === "Like added") {
+                alert("Your like was added!");
+            } else if (xhr.responseText === "Like removed") {
+                alert("Your like was removed!");
+            } 
         localStorage.setItem('scrollPosition', scrollPosition);
-        location.reload(); // Refresh the current page after liking
+        location.reload(); 
+        } else if (xhr.status === 400) {  
+            alert("Login first.");
         } else {
-        alert("Error liking the post.");
+            alert("Error liking the post.");
         }
         };
         xhr.send();
         }
-
         window.onbeforeunload = function() {
         localStorage.setItem("scrollPosition", window.scrollY);
         };
@@ -552,6 +546,32 @@
             window.scrollTo(0, parseInt(scrollPosition));
         }
         };
+
+        document.addEventListener('DOMContentLoaded', function() {
+        const defaultImageURL = 'https://www.strasys.uk/wp-content/uploads/2022/02/Depositphotos_484354208_S.jpg';
+
+        // Function to handle images
+        function handleImages(selector) {
+        const images = document.querySelectorAll(selector);
+        images.forEach(img => {
+            // Set default image on error
+            img.addEventListener('error', function() {
+                img.src = defaultImageURL;
+            });
+
+            // Set default image if src is empty or not set
+            if (!img.src || img.src.trim() === '') {
+                img.src = defaultImageURL;
+            }
+        });
+        }
+
+        // Handle all images
+        handleImages('img');
+
+        // Handle images with a specific class
+        handleImages('img.post-image');
+        });
     </script>
 </body>
 </html>

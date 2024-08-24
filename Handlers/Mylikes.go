@@ -8,6 +8,16 @@ import (
 
 func MyLikesHandler(db *sql.DB) http.HandlerFunc {
     return func(w http.ResponseWriter, r *http.Request) {
+
+        
+        //err
+				if r.URL.Path != "/mylikes" {
+					RenderErrorPage(w, http.StatusNotFound)
+					return
+		}
+
+
+
         session, _ := store.Get(r, "mysession")
 
         if auth, ok := session.Values["authenticated"].(bool); !ok || !auth {
@@ -17,8 +27,11 @@ func MyLikesHandler(db *sql.DB) http.HandlerFunc {
 
         userID, _ := session.Values["id"].(int)
         username, _ := session.Values["username"].(string)
-        image, _ := session.Values["profileImage"].(string)
-        // Query to select posts liked by the user
+        image, ok := session.Values["profileImage"].(string)
+    
+        if !ok || image == "" {
+            image = defaultProfileImage 
+        }
         rows, err := db.Query(`
             SELECT p.post_id, p.text, p.media, p.date, p.category 
             FROM post p
@@ -26,7 +39,6 @@ func MyLikesHandler(db *sql.DB) http.HandlerFunc {
             WHERE l.user_id = ?
         `, userID)
         if err != nil {
-            http.Error(w, err.Error(), http.StatusInternalServerError)
             RenderErrorPage(w, http.StatusInternalServerError) 
             return
         }
@@ -50,7 +62,6 @@ func MyLikesHandler(db *sql.DB) http.HandlerFunc {
             }
             err := rows.Scan(&post.PostID, &post.Text, &post.Media, &post.Date, &post.Category)
             if err != nil {
-                http.Error(w, err.Error(), http.StatusInternalServerError)
                 RenderErrorPage(w, http.StatusInternalServerError) 
                 return
             }
@@ -59,7 +70,6 @@ func MyLikesHandler(db *sql.DB) http.HandlerFunc {
 
         tmpl, err := template.ParseFiles("HTML/mylikes.html")
         if err != nil {
-            http.Error(w, err.Error(), http.StatusInternalServerError)
             RenderErrorPage(w, http.StatusInternalServerError) 
             return
         }

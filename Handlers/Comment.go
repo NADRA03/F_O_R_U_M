@@ -10,6 +10,15 @@ import (
 
 func CommentHandler(db *sql.DB) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+
+
+		//err
+				if r.URL.Path != "/comment" {
+					RenderErrorPage(w, http.StatusNotFound)
+					return
+		}
+
+
 		session, _ := store.Get(r, "mysession")
         
 		username, ok := session.Values["username"].(string)
@@ -30,24 +39,32 @@ func CommentHandler(db *sql.DB) http.HandlerFunc {
             RenderErrorPage(w, http.StatusBadRequest)
             return
         }
-
+  
 		if r.Method == http.MethodPost {
 			if auth, ok := session.Values["authenticated"].(bool); !ok || !auth {
 				http.Redirect(w, r, "/login", http.StatusSeeOther)
 				return
 			}
 			comment := r.FormValue("comment")
+
+
+            //err
+			if comment == "" {
+				RenderErrorPage(w, http.StatusBadRequest) 
+				return
+            }
+
+
             userID, _ := session.Values["id"].(int)
 			_, err := db.Exec("INSERT INTO comment (user_id, post_id, comment, date) VALUES (?, ?, ?, CURRENT_TIMESTAMP)", userID, postID, comment)
 			if err != nil {
-				http.Error(w, err.Error(), http.StatusInternalServerError)
 				RenderErrorPage(w, http.StatusInternalServerError)
 				return
 			}
-
+      
 			http.Redirect(w, r, fmt.Sprintf("/comment?post_id=%d&status=success", postID), http.StatusSeeOther)
 			return
-		}
+		} 
 
 		var post struct {
 			PostID    int
