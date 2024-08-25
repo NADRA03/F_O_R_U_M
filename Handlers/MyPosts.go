@@ -214,7 +214,7 @@ func isImage(url string) bool {
 
 
 func embedYouTube(url string) string {
-	re := regexp.MustCompile(`(?:youtube\.com/watch\?v=|youtu\.be/|youtube\.com/shorts/)([\w-]+)`)
+	re := regexp.MustCompile(`(?:youtube\.com/watch\?v=|youtu\.be/|youtube\.com/shorts/|youtube\.com/live/|youtube\.com/watch\?v=|youtube\.com/live/watch\?v=)([\w-]+)`)
 	match := re.FindStringSubmatch(url)
 	if len(match) > 1 {
 		return "https://www.youtube.com/embed/" + match[1]

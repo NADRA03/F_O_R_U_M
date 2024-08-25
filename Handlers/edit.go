@@ -49,26 +49,35 @@ func EditProfileHandler(db *sql.DB) http.HandlerFunc {
                 return
             }
             
-
-            //err
-            var existingUser string
-            err = db.QueryRow("SELECT username FROM user WHERE username = ?", username).Scan(&existingUser)
-			if err != nil && err != sql.ErrNoRows {
-				RenderErrorPage(w, http.StatusInternalServerError)
-				return
-			}
-			if existingUser != "" {
-				http.Error(w, "Username already taken", http.StatusBadRequest)
-				RenderErrorPage(w, http.StatusBadRequest)
-				return
-			}
-
-            
             //err
             if username == "" || email == "" || password == "" {
 				RenderErrorPage(w, http.StatusBadRequest)
 				return
 			}
+
+            		
+		var existingUser string
+		err = db.QueryRow("SELECT username FROM user WHERE username = ? AND id != ?", username, userID).Scan(&existingUser)
+		if err != nil && err != sql.ErrNoRows {
+			RenderErrorPage(w, http.StatusInternalServerError)
+			return
+		}
+		if existingUser != "" {
+			RenderErrorPage(w, http.StatusBadRequest)
+			return
+		}
+
+		
+		var existingEmail string
+		err = db.QueryRow("SELECT email FROM user WHERE email = ? AND id != ?", email, userID).Scan(&existingEmail)
+		if err != nil && err != sql.ErrNoRows {
+			RenderErrorPage(w, http.StatusInternalServerError)
+			return
+		}
+		if existingEmail != "" {
+			RenderErrorPage(w, http.StatusBadRequest)
+			return
+		}
 
             _, err = db.Exec("UPDATE user SET username = ?, email = ?, password = ?, image = ? WHERE id = ?",
                 username, email, password, image, userID)
