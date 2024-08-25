@@ -74,6 +74,26 @@ func SignupHandler(db *sql.DB) http.HandlerFunc {
 				return
 			}
 
+
+			var existingEmail string
+			err = db.QueryRow("SELECT email FROM user WHERE email = ?", email).Scan(&existingEmail)
+			if err != nil && err != sql.ErrNoRows {
+				RenderErrorPage(w, http.StatusInternalServerError)
+				return
+			}
+
+            
+			//err
+			if existingEmail != "" {
+				tmpl, err := template.ParseFiles("HTML/Signup.html")
+				if err != nil {
+					RenderErrorPage(w, http.StatusInternalServerError)
+					return
+				}
+				tmpl.Execute(w, map[string]string{"ErrorMessage": "Email already taken"})
+				return
+			}
+
 			
 			_, err = db.Exec("INSERT INTO user (username, password, email, image) VALUES (?, ?, ?, ?)", username, password, email, image)
 			if err != nil {
