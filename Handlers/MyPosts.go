@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"regexp"
 	"strings"
+	"strconv"
 )
 
 
@@ -26,7 +27,7 @@ func MyPostsHandler(db *sql.DB) http.HandlerFunc {
 			http.Redirect(w, r, "/login", http.StatusSeeOther)
 			return
 		}
-
+ 
 		
 		userID, _ := session.Values["id"].(int)
 		username, _ := session.Values["username"].(string)
@@ -46,12 +47,51 @@ func MyPostsHandler(db *sql.DB) http.HandlerFunc {
             RenderErrorPage(w, http.StatusInternalServerError)
             return
         }
+
+
+		action := r.URL.Query().Get("action")
+		if action == "delete" {
+			postIDStr := r.URL.Query().Get("post_id")
+			if postIDStr == "" {
+				RenderErrorPage(w, http.StatusBadRequest)
+				return
+			}
 		
+			postID, err := strconv.Atoi(postIDStr)
+			if err != nil {
+				RenderErrorPage(w, http.StatusBadRequest) 
+				return
+			}
+		
+			var exists bool
+			err = db.QueryRow("SELECT EXISTS(SELECT 1 FROM post WHERE post_id = ? AND user_id = ?)", postID, userID).Scan(&exists)
+			if err != nil {
+				RenderErrorPage(w, http.StatusInternalServerError)
+				return
+			}
+		
+			if !exists {
+				RenderErrorPage(w, http.StatusNotFound)
+				return
+			}
+		
+			_, err = db.Exec("DELETE FROM post WHERE post_id = ? AND user_id = ?", postID, userID)
+			if err != nil {
+				RenderErrorPage(w, http.StatusInternalServerError)
+				return
+			}
+		
+			// Redirect after deletion
+			http.Redirect(w, r, "/myposts?status=deleted", http.StatusSeeOther)
+			return
+		}
+
+
+
 		if r.Method == http.MethodPost {
 			text := r.FormValue("text")
 			category := r.FormValue("category")
 			media := r.FormValue("media")
-
 			
 			_, err := db.Exec("INSERT INTO post (user_id, text, media, date, category) VALUES (?, ?, ?, CURRENT_TIMESTAMP, ?)", userID, text, media, category)
 			if err != nil {
