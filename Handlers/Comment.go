@@ -35,7 +35,6 @@ func CommentHandler(db *sql.DB) http.HandlerFunc {
         postIDStr := r.URL.Query().Get("post_id")
         postID, err := strconv.Atoi(postIDStr)
         if err != nil {
-            http.Error(w, "Invalid post ID", http.StatusBadRequest)
             RenderErrorPage(w, http.StatusBadRequest)
             return
         }
@@ -53,6 +52,7 @@ func CommentHandler(db *sql.DB) http.HandlerFunc {
 				RenderErrorPage(w, http.StatusBadRequest) 
 				return
             }
+            
 
 
             userID, _ := session.Values["id"].(int)
@@ -99,13 +99,13 @@ func CommentHandler(db *sql.DB) http.HandlerFunc {
 
 		// Retrieve comments including commenter details
 		rows, err := db.Query(`
-            SELECT c.comment_id, c.user_id, c.comment, c.date, u.username, u.image
+            SELECT c.comment_id, c.user_id, c.comment, c.date, u.username, u.image, 
+            (SELECT COUNT(*) FROM comment_like cl WHERE cl.comment_id = c.comment_id) AS like_count
             FROM comment c
             JOIN user u ON c.user_id = u.id
             WHERE c.post_id = ?
         `, postID)
 		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
 			RenderErrorPage(w, http.StatusInternalServerError)
 			return
 		}
@@ -118,6 +118,7 @@ func CommentHandler(db *sql.DB) http.HandlerFunc {
 			Date      string
 			Username  string
 			Image     string
+			LikeCount int
 		}
 
 		for rows.Next() {
@@ -128,19 +129,41 @@ func CommentHandler(db *sql.DB) http.HandlerFunc {
 				Date      string
 				Username  string
 				Image     string
+				LikeCount int
 			}
-			err := rows.Scan(&comment.CommentID, &comment.UserID, &comment.Comment, &comment.Date, &comment.Username, &comment.Image)
+			err := rows.Scan(&comment.CommentID, &comment.UserID, &comment.Comment, &comment.Date, &comment.Username, &comment.Image, &comment.LikeCount)
 			if err != nil {
-				http.Error(w, err.Error(), http.StatusInternalServerError)
 				RenderErrorPage(w, http.StatusInternalServerError)
 				return
 			}
 			comments = append(comments, comment)
-		}
+		} 
+
+
+
+
+				// Count likes
+				var likeCount int
+				err = db.QueryRow("SELECT COUNT(*) FROM like WHERE post_id = ?", postID).Scan(&likeCount)
+				if err != nil {
+					RenderErrorPage(w, http.StatusInternalServerError)
+					return
+				}
+		
+				// Count comments
+				var commentCount int
+				err = db.QueryRow("SELECT COUNT(*) FROM comment WHERE post_id = ?", postID).Scan(&commentCount)
+				if err != nil {
+					RenderErrorPage(w, http.StatusInternalServerError)
+					return
+				}
+
+				
+
+
 
         tmpl, err := template.ParseFiles("HTML/comment.html")
         if err != nil {
-            http.Error(w, err.Error(), http.StatusInternalServerError)
             RenderErrorPage(w, http.StatusInternalServerError) 
             return
         }
@@ -164,16 +187,21 @@ func CommentHandler(db *sql.DB) http.HandlerFunc {
                 Date         string
                 Username     string
                 Image        string
+				LikeCount int
             }
             StatusMessage string
             Image         string
             Username      string
+			LikeCount        int
+			CommentCount     int
         }{  
             Username:       username,
             Image:          image,
             Post:           post,
             Comments:       comments,
             StatusMessage:  statusMessage,
+            CommentCount:          commentCount,
+			LikeCount:             likeCount,
         })
     }
 }

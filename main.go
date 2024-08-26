@@ -30,6 +30,7 @@ func main() {
     http.HandleFunc("/profile",Forum.ViewProfileHandler(db))
     http.HandleFunc("/follow", Forum.FollowHandler(db))
     http.HandleFunc("/foryou", Forum.ForyouHandler(db))
+    http.HandleFunc("/comment-like", Forum.CommentLikeHandler(db))
     fmt.Println("Server started at :8080")
     http.ListenAndServe(":8080", nil)
 }

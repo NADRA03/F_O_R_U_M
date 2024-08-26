@@ -27,22 +27,21 @@ func AddPostHandler(db *sql.DB) http.HandlerFunc {
         if r.Method == http.MethodPost {
             text := r.FormValue("text")
             category := r.FormValue("category")
-
-            
+			media := r.FormValue("media")
+			
             //err
-            if text == "" || category == "" {
+            if text == "" && media == "" {
                             RenderErrorPage(w, http.StatusBadRequest) 
                             return
             }
 
-            _, err := db.Exec("INSERT INTO post (user_id, text, media, date, category) VALUES (?, ?, '', CURRENT_TIMESTAMP, ?)", userID, text, category)
-            if err != nil {
-                http.Error(w, err.Error(), http.StatusInternalServerError)
-                RenderErrorPage(w, http.StatusInternalServerError)  
-                return
-            }
+			_, err := db.Exec("INSERT INTO post (user_id, text, media, date, category) VALUES (?, ?, ?, CURRENT_TIMESTAMP, ?)", userID, text, media, category)
+			if err != nil {
+				RenderErrorPage(w, http.StatusInternalServerError) 
+				return
+			}
 
-            http.Redirect(w, r, "/?status=success", http.StatusSeeOther)
+            http.Redirect(w, r, "/myposts?status=success", http.StatusSeeOther)
             return
         }
         RenderErrorPage(w, http.StatusMethodNotAllowed)

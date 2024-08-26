@@ -121,12 +121,15 @@
         object-fit: cover; 
         }
         .post-media{
-            padding-top: 10px;
+            padding-top: 25px;
             width: 50%;
             height: 50%;
         }
         .post-video{
-            padding-top: 10px;  
+            padding-top: 25px;  
+        }
+        .post-link{
+            padding-top: 25px;  
         }
         .post p {
         font-weight: lighter;
@@ -451,7 +454,7 @@
             {{else if eq .MediaType "youtube"}}
                 <iframe width="560" height="315" src="{{.Media}}" class="post-video" frameborder="0" allowfullscreen></iframe>
             {{else if eq .MediaType "link"}}
-                <a href="{{.Media}}" target="_blank">View Media</a>
+                <a href="{{.Media}}" class="post-link" target="_blank">View Media</a>
             {{end}}
 
 
@@ -475,9 +478,9 @@
         </button>
         <form id="postForm" action="/myposts" method="post">
             <label for="text">Text:</label>
-            <textarea id="text" name="text" required></textarea><br>
+            <textarea id="text" name="text"></textarea><br>
             <label for="category">Category:</label>
-            <select id="category" name="category" required>
+            <select id="category" name="category">
                 <option value="General" selected></option>>#General</option>
                 <option value="Memes">#Memes</option>
                 <option value="News">#News</option>

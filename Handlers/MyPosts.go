@@ -92,6 +92,12 @@ func MyPostsHandler(db *sql.DB) http.HandlerFunc {
 			text := r.FormValue("text")
 			category := r.FormValue("category")
 			media := r.FormValue("media")
+
+			//err
+						if text == "" && media == "" {
+                            RenderErrorPage(w, http.StatusBadRequest) 
+                            return
+            }
 			
 			_, err := db.Exec("INSERT INTO post (user_id, text, media, date, category) VALUES (?, ?, ?, CURRENT_TIMESTAMP, ?)", userID, text, media, category)
 			if err != nil {
@@ -209,7 +215,7 @@ func parseMediaType(media string) string {
 
 
 func isImage(url string) bool {
-	return strings.HasSuffix(url, ".jpg") || strings.HasSuffix(url, ".jpeg") || strings.HasSuffix(url, ".png") || strings.HasSuffix(url, ".gif")
+	return strings.HasSuffix(url, ".jpg") || strings.HasSuffix(url, ".jpeg") || strings.HasSuffix(url, ".png") || strings.HasSuffix(url, ".gif") || strings.HasSuffix(url, ".webp")
 }
 
 
