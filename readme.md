@@ -1,30 +1,132 @@
-# pages
-1. login
-2. sign up 
-3. home (posts with comments and likes and categories filter)
-4. liked posts
-5. profile as side bar at home + button for liked posts + button for myposts 
-6. moderator 
-7. myposts
+# 📥 Web Forum
 
-# cookies and sessions 
-the server can use the session ID stored in the cookie to retrieve the corresponding session data.
+A fully functional web-based forum built using **Go**, **SQLite**, implementing user authentication, posts, comments, likes/dislikes, filtering, and session management with cookies — all without any frontend frameworks.
 
-# Tables 
-1. id username password email image    user
-2. post-id id text media date category        post
-3. comment-id id post-id comment date       comment
-4. like-id id post-id                    like 
+---
 
-# tutorial 
-1. download sqlite add it to path 
-2. download it into go "go get github.com/mattn/go-sqlite3"
-3. install gcc 
-4. run database "sqlite3 forum.db" will open a terminal 
-5. fake users: moderator 123, not-moderator 123
-moderator can access moderator.html
+## Features
 
-# resources 
-https://wweb.dev/resources/animated-css-background-generator
+- 🗣️ **User Communication**
+  - Registered users can create posts and comments
+  - Public visibility of all content 
+
+- 🧭 **Categories**
+  - Posts can be tagged with one or more categories
+  - Users can filter posts by category
+
+- 👍 **Likes / Dislikes**
+  - Registered users can like or dislike posts and comments
+  - Reaction counts visible to all users
+
+- 🔍 **Filtering**
+  - Filter by category 
+  - Filter by user’s posts or liked posts 
+
+- 🛡️ **Authentication**
+  - Registration and login system
+  - Session expiration support
+
+---
+
+## Technologies Used
+
+- **Backend**: Go (Golang)
+- **Database**: SQLite 
+
+---
+
+## Getting Started
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/NADRA03/F_U_R_U_M.git
+````
+
+### 2. Build & Run with Docker
+
+```bash
+go run main.go
+```
+
+The application will be accessible at:
+👉 `http://localhost:8080`
+
+---
+
+## Project Structure
+
+```
+F_U_R_U_M/
+├── main.go
+├── handlers/             
+├── assets/           
+├── html/           
+├── static/               
+└── README.md
+```
+---
+
+## Registration Requirements
+
+* Email (must be unique)
+* Username
+* Password (stored encrypted using bcrypt)
+* Error returned on duplicate email or wrong login credentials
+
+---
+
+## Session Management
+
+* Users are authenticated via cookies
+* Only one session per user allowed
+* Cookies contain UUID and expiration date
+
+---
+
+## SQLite
+
+The database stores:
+
+* Users
+* Posts
+* Comments
+* Categories
+* Reactions (likes/dislikes)
+
+---
+
+## Allowed Go Packages
+
+* `net/http`
+* `html/template`
+* `database/sql`
+* `github.com/mattn/go-sqlite3`
+* `github.com/gorilla/sessions`
+* `github.com/gorilla/securecookie`
+* `github.com/google/gofuzz`
+
+---
+
+## Preview
+
+![View 1](./readme/Picture1.png)  
+![View 2](./readme/Picture2.png)  
+![View 3](./readme/Picture3.png)  
+![View 4](./readme/Picture4.png)  
+![View 5](./readme/Picture5.png)  
+![View 6](./readme/Picture6.png)  
+
+---
+
+## License
+
+MIT License
+
+---
+
+## Author
+
+Made with ❤️ by [NADRA03](https://github.com/NADRA03), [AsalarS](https://github.com/AsalarS), [Abdulla-22](https://github.com/Abdulla-22).
 
 
